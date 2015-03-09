@@ -1,2 +1,2 @@
 # WoT-Intelligence
-World of Tank replay analyzer and stats provider
+World of Tank replay analyzer and stats provider 
