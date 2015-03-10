@@ -31,7 +31,6 @@ public class ReplayFileReader {
         try {
             randomAccessFile.seek(0);
             int magicNumberReadFromFile = randomAccessFile.readInt();
-            System.out.println(magicNumberReadFromFile);
             return String.format("%04X", magicNumberReadFromFile).equals(MAGIC_NUMBER);
         } catch (IOException e) {
             e.printStackTrace();
