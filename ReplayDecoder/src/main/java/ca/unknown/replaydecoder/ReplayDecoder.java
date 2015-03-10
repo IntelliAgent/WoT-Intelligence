@@ -1,6 +1,7 @@
 package ca.unknown.replaydecoder;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ReplayDecoder {
@@ -24,9 +25,13 @@ public class ReplayDecoder {
                 //int numberOfJSONBlocks = replayFileReader.getNumberOfJSONBlocks();
                 int firstBlockSize = replayFileReader.getFirstJSONBlockSize();
                 int secondBlockSize = replayFileReader.getSecondJSONBlockSize();
+                int cryptedSizePart = replayFileReader.getCryptedSizePart();
 
-                System.out.println(replayFileReader.getFirstJson(firstBlockSize));
-                System.out.println(replayFileReader.getSecondJson(secondBlockSize));
+                System.out.println(replayFileReader.getFirstJSONBlockSize());
+                System.out.println(replayFileReader.getSecondJSONBlockSize());
+                byte[] compressedCrypted = replayFileReader.getCryptedPart(cryptedSizePart);
+                ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
+                replayDecrypter.decrypt();
 
             }
         }

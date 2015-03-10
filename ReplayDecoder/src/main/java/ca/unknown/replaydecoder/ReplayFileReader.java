@@ -61,7 +61,8 @@ public class ReplayFileReader {
 
     public int getSecondJSONBlockSize() {
         try {
-            int positionSecondJson = POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize();
+            int positionSecondJson =
+                POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize();
             randomAccessFile.seek(positionSecondJson);
             return ByteSwapper.swap(randomAccessFile.readInt());
         } catch (IOException e) {
@@ -73,13 +74,37 @@ public class ReplayFileReader {
     public String getSecondJson(int jsonSize) {
         byte[] json = ByteBuffer.allocate(jsonSize).array();
         try {
-            randomAccessFile
-                .seek(POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + OFFSET_SECOND_JSON);
+            randomAccessFile.seek(
+                POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize()
+                    + OFFSET_SECOND_JSON);
             randomAccessFile.read(json, 0, jsonSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return getReadableJsonData(json);
+    }
+
+    public int getCryptedSizePart() {
+        int positionCryptedPart = POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + getSecondJSONBlockSize();
+        try {
+            randomAccessFile.seek(positionCryptedPart);
+            return ByteSwapper.swap(randomAccessFile.readInt());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public byte[] getCryptedPart(int cryptedSize) {
+        int positionCryptedPart = POS_NUMBER_JSON_BLOCKS + POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + getSecondJSONBlockSize();
+        byte[] crypted = ByteBuffer.allocate(cryptedSize).array();
+        try {
+            randomAccessFile.seek(positionCryptedPart);
+            randomAccessFile.read(crypted, 0, cryptedSize);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return crypted;
     }
 
     public String getFirstJson(int jsonSize) {
