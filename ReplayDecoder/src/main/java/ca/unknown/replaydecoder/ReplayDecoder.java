@@ -1,6 +1,5 @@
 package ca.unknown.replaydecoder;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.util.Scanner;
 
@@ -14,17 +13,19 @@ public class ReplayDecoder {
         File[] listOfReplays = folder.listFiles();
 
         assert listOfReplays != null;
-        BufferedReader encrypted = null;
-        StringBuilder sb = new StringBuilder();
 
         for (File replay : listOfReplays) {
             if (replay.isFile() && replay.getName().endsWith(".wotreplay")) {
                 ReplayFileReader replayFileReader = new ReplayFileReader(replay);
                 boolean goodMagicNumber = replayFileReader.validateMagicNumber();
-                int numberOfJSONBlocks = replayFileReader.getNumberOfJSONBlocks();
+                if (!goodMagicNumber) {
+                    break;
+                }
+                //int numberOfJSONBlocks = replayFileReader.getNumberOfJSONBlocks();
                 int firstBlockSize = replayFileReader.getFirstJSONBlockSize();
                 int secondBlockSize = replayFileReader.getSecondJSONBlockSize();
-                System.out.println(secondBlockSize);
+
+                System.out.println(replayFileReader.getFirstJson(firstBlockSize));
                 System.out.println(replayFileReader.getSecondJson(secondBlockSize));
 
             }

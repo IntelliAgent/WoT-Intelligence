@@ -85,7 +85,7 @@ public class ReplayFileReader {
     public String getFirstJson(int jsonSize) {
         byte[] json = ByteBuffer.allocate(jsonSize).array();
         try {
-            randomAccessFile.seek(POS_SIZE_FIRST_JSON);
+            randomAccessFile.seek(POS_SIZE_FIRST_JSON + OFFSET_SECOND_JSON);
             randomAccessFile.read(json, 0, jsonSize);
         } catch (IOException e) {
             e.printStackTrace();
