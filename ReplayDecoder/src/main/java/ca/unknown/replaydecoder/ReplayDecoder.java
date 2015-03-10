@@ -23,7 +23,9 @@ public class ReplayDecoder {
                 boolean goodMagicNumber = replayFileReader.validateMagicNumber();
                 int numberOfJSONBlocks = replayFileReader.getNumberOfJSONBlocks();
                 int firstBlockSize = replayFileReader.getFirstJSONBlockSize();
-                System.out.println(replayFileReader.getFirstJson(firstBlockSize));
+                int secondBlockSize = replayFileReader.getSecondJSONBlockSize();
+                System.out.println(secondBlockSize);
+                System.out.println(replayFileReader.getSecondJson(secondBlockSize));
 
             }
         }

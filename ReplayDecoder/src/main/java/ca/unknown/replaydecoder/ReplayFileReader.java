@@ -17,6 +17,7 @@ public class ReplayFileReader {
     private static final String MAGIC_NUMBER = "12323411";
     private static final int POS_NUMBER_JSON_BLOCKS = 4;
     private static final int POS_SIZE_FIRST_JSON = 8;
+    private static final int OFFSET_SECOND_JSON = 4;
     private RandomAccessFile randomAccessFile;
 
     public ReplayFileReader(File file) {
@@ -58,14 +59,42 @@ public class ReplayFileReader {
         return 0;
     }
 
-    public String getFirstJson(int jsonSize) {
+    public int getSecondJSONBlockSize() {
+        try {
+            int positionSecondJson = POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize();
+            randomAccessFile.seek(positionSecondJson);
+            return ByteSwapper.swap(randomAccessFile.readInt());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public String getSecondJson(int jsonSize) {
         byte[] json = ByteBuffer.allocate(jsonSize).array();
         try {
+            randomAccessFile
+                .seek(POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + OFFSET_SECOND_JSON);
             randomAccessFile.read(json, 0, jsonSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        StringBuilder buffer = new StringBuilder();
+        return getReadableJsonData(json);
+    }
+
+    public String getFirstJson(int jsonSize) {
+        byte[] json = ByteBuffer.allocate(jsonSize).array();
+        try {
+            randomAccessFile.seek(POS_SIZE_FIRST_JSON);
+            randomAccessFile.read(json, 0, jsonSize);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return getReadableJsonData(json);
+    }
+
+    private String getReadableJsonData(byte[] json) {
+        StringBuilder buffer = new StringBuilder(json.length);
         for (byte bit : json) {
             buffer.append((char) bit);
         }
