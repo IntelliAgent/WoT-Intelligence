@@ -17,7 +17,8 @@ public class ReplayFileReader {
     private static final String MAGIC_NUMBER = "12323411";
     private static final int POS_NUMBER_JSON_BLOCKS = 4;
     private static final int POS_SIZE_FIRST_JSON = 8;
-    private static final int OFFSET_SECOND_JSON = 4;
+    private static final int SIZE_SECOND_JSON_BLOCK_OFFSET = 4;
+    private static final int OFFSET_CRYPTED_SIZE = 4;
     private RandomAccessFile randomAccessFile;
 
     public ReplayFileReader(File file) {
@@ -61,8 +62,7 @@ public class ReplayFileReader {
 
     public int getSecondJSONBlockSize() {
         try {
-            int positionSecondJson =
-                POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize();
+            int positionSecondJson = POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize();
             randomAccessFile.seek(positionSecondJson);
             return ByteSwapper.swap(randomAccessFile.readInt());
         } catch (IOException e) {
@@ -75,8 +75,7 @@ public class ReplayFileReader {
         byte[] json = ByteBuffer.allocate(jsonSize).array();
         try {
             randomAccessFile.seek(
-                POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize()
-                    + OFFSET_SECOND_JSON);
+                POS_NUMBER_JSON_BLOCKS + POS_NUMBER_JSON_BLOCKS + getFirstJSONBlockSize() + SIZE_SECOND_JSON_BLOCK_OFFSET);
             randomAccessFile.read(json, 0, jsonSize);
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,8 +83,11 @@ public class ReplayFileReader {
         return getReadableJsonData(json);
     }
 
-    public int getCryptedSizePart() {
-        int positionCryptedPart = POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + getSecondJSONBlockSize();
+    public int getCryptedPartSize() {
+        int positionCryptedPart =
+            POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + SIZE_SECOND_JSON_BLOCK_OFFSET
+                + getSecondJSONBlockSize();
+        System.out.println(positionCryptedPart);
         try {
             randomAccessFile.seek(positionCryptedPart);
             return ByteSwapper.swap(randomAccessFile.readInt());
@@ -95,8 +97,10 @@ public class ReplayFileReader {
         return 0;
     }
 
-    public byte[] getCryptedPart(int cryptedSize) {
-        int positionCryptedPart = POS_NUMBER_JSON_BLOCKS + POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + getSecondJSONBlockSize();
+    public byte[] getCryptedBlock(int cryptedSize) {
+        int positionCryptedPart =
+            POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + SIZE_SECOND_JSON_BLOCK_OFFSET
+                + getSecondJSONBlockSize() + OFFSET_CRYPTED_SIZE + 4;
         byte[] crypted = ByteBuffer.allocate(cryptedSize).array();
         try {
             randomAccessFile.seek(positionCryptedPart);
@@ -110,7 +114,7 @@ public class ReplayFileReader {
     public String getFirstJson(int jsonSize) {
         byte[] json = ByteBuffer.allocate(jsonSize).array();
         try {
-            randomAccessFile.seek(POS_SIZE_FIRST_JSON + OFFSET_SECOND_JSON);
+            randomAccessFile.seek(POS_SIZE_FIRST_JSON + SIZE_SECOND_JSON_BLOCK_OFFSET);
             randomAccessFile.read(json, 0, jsonSize);
         } catch (IOException e) {
             e.printStackTrace();
