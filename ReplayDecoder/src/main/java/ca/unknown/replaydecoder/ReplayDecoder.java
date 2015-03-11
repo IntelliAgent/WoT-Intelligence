@@ -36,7 +36,7 @@ public class ReplayDecoder {
 
                 FileOutputStream fos = null;
                 try {
-                    fos = new FileOutputStream("E:\\CompressedData.txt");
+                    fos = new FileOutputStream("C:\\Data\\DecryptedData.txt");
                     fos.write(compressedData);
                     fos.close();
                 } catch (FileNotFoundException e) {

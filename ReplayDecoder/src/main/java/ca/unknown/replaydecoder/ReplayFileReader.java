@@ -86,7 +86,7 @@ public class ReplayFileReader {
     public int getCryptedPartSize() {
         int positionCryptedPart =
             POS_NUMBER_JSON_BLOCKS + POS_SIZE_FIRST_JSON + getFirstJSONBlockSize() + SIZE_SECOND_JSON_BLOCK_OFFSET
-                + getSecondJSONBlockSize();
+                + getSecondJSONBlockSize() + 4;
         System.out.println(positionCryptedPart);
         try {
             randomAccessFile.seek(positionCryptedPart);
