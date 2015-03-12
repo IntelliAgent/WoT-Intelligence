@@ -1,13 +1,8 @@
 package ca.unknown.replaydecoder.decryption;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 public class ReplayDecrypter {
 
@@ -44,15 +39,7 @@ public class ReplayDecrypter {
                 byteBuffer.put(to_decrypt, 0, to_decrypt.length);
                 return cipher.doFinal(byteBuffer.array());
             }
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
