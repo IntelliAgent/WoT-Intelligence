@@ -1,16 +1,13 @@
-package ca.unknown.replaydecoder;
+package ca.unknown.replaydecoder.decryption;
 
-import javax.crypto.BadPaddingException;
+import ca.unknown.replaydecoder.swapper.ByteSwapper;
+
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 public class ReplayDecrypter {
 
@@ -29,16 +26,12 @@ public class ReplayDecrypter {
     public byte[] decrypt() {
         ByteBuffer byteBuffer = ByteBuffer.allocate(KEY.length);
         byteBuffer.put(KEY);
-        try {
-            return decryptBlowfish(bytes, byteBuffer.array());
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+        return decryptBlowfish(bytes, byteBuffer.array());
+
     }
 
-    private static byte[] decryptBlowfish(byte[] to_decrypt, byte[] strkey)
-        throws BadPaddingException {
+    private static byte[] decryptBlowfish(byte[] to_decrypt, byte[] strkey) {
 
         FileOutputStream fos = null;
         try {
@@ -59,19 +52,20 @@ public class ReplayDecrypter {
 
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
 
-            if (padding_size == 0 || padding_size == 8) {
-                cipher.update(to_decrypt);
-                return cipher.doFinal(to_decrypt);
+            if (padding_size == 8) {
+                return cipher.doFinal(to_decrypt, 0, to_decrypt.length);
             } else {
                 int requiredSize = to_decrypt.length + padding_size;
                 ByteBuffer byteBuffer = ByteBuffer.allocate(requiredSize);
-                byteBuffer.put(to_decrypt);
-                cipher.update(byteBuffer.array());
+                ByteSwapper.swap(to_decrypt);
+                byteBuffer.put(to_decrypt, 0, to_decrypt.length);
                 return cipher.doFinal(byteBuffer.array());
             }
-        } catch (IllegalBlockSizeException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
+
 }

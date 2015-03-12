@@ -1,5 +1,9 @@
 package ca.unknown.replaydecoder;
 
+import ca.unknown.replaydecoder.decompression.ReplayDecompressor;
+import ca.unknown.replaydecoder.decryption.ReplayDecrypter;
+import ca.unknown.replaydecoder.swapper.ByteSwapper;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,7 +28,8 @@ public class ReplayDecoder {
                 if (!goodMagicNumber) {
                     break;
                 }
-                //int numberOfJSONBlocks = replayFileReader.getNumberOfJSONBlocks();
+                int numberOfJSONBlocks = replayFileReader.getNumberOfJSONBlocks();
+                System.out.println(numberOfJSONBlocks);
                 int firstBlockSize = replayFileReader.getFirstJSONBlockSize();
                 int secondBlockSize = replayFileReader.getSecondJSONBlockSize();
                 System.out.println("Second block size: " + secondBlockSize);
@@ -37,6 +42,7 @@ public class ReplayDecoder {
                 FileOutputStream fos = null;
                 try {
                     fos = new FileOutputStream("C:\\Data\\DecryptedData.txt");
+
                     fos.write(compressedData);
                     fos.close();
                 } catch (FileNotFoundException e) {
@@ -46,7 +52,18 @@ public class ReplayDecoder {
                 }
 
                 ReplayDecompressor replayDecompressor = new ReplayDecompressor(compressedData);
-                replayDecompressor.unzip();
+                String decompressedData = replayDecompressor.unzip();
+
+                try {
+                    fos = new FileOutputStream("C:\\Data\\DecompressedData.txt");
+
+                    fos.write(decompressedData.getBytes());
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

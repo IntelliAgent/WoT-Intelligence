@@ -1,2 +1,2 @@
 # WoT-Intelligence
-World of Tank replay analyzer and stats provider 
+A pattern recognition tool for the statistical analysis of world of tank replay data.
