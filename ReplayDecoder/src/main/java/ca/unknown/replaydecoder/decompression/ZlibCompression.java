@@ -1,4 +1,4 @@
-package ca.unknown.replaydecoder.compression;
+package ca.unknown.replaydecoder.decompression;
 
 import java.io.*;
 import java.util.zip.InflaterInputStream;

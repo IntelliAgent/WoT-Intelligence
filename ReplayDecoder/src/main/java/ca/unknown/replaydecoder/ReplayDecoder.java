@@ -1,5 +1,8 @@
 package ca.unknown.replaydecoder;
 
+import ca.unknown.replaydecoder.decompression.ReplayDecompressor;
+import ca.unknown.replaydecoder.decryption.ReplayDecrypter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

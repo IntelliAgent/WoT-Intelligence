@@ -1,6 +1,4 @@
-package ca.unknown.replaydecoder;
-
-import ca.unknown.replaydecoder.compression.ZlibCompression;
+package ca.unknown.replaydecoder.decompression;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

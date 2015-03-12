@@ -1,4 +1,4 @@
-package ca.unknown.replaydecoder;
+package ca.unknown.replaydecoder.decryption;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -37,11 +37,11 @@ public class ReplayDecrypter {
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
 
             if (padding_size == 0 || padding_size == 8) {
-                return cipher.doFinal(to_decrypt);
+                return cipher.doFinal(to_decrypt, 0, to_decrypt.length);
             } else {
                 int requiredSize = to_decrypt.length + padding_size;
                 ByteBuffer byteBuffer = ByteBuffer.allocate(requiredSize);
-                byteBuffer.put(to_decrypt);
+                byteBuffer.put(to_decrypt, 0, to_decrypt.length);
                 return cipher.doFinal(byteBuffer.array());
             }
         } catch (IllegalBlockSizeException e) {
