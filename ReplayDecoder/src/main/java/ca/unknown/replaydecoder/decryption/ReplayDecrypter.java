@@ -31,7 +31,7 @@ public class ReplayDecrypter {
 
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
 
-            if (padding_size == 0 || padding_size == 8) {
+            if (padding_size == 8) {
                 return cipher.doFinal(to_decrypt, 0, to_decrypt.length);
             } else {
                 int requiredSize = to_decrypt.length + padding_size;
@@ -44,4 +44,6 @@ public class ReplayDecrypter {
         }
         return null;
     }
+
+
 }
