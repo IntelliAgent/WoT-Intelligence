@@ -30,17 +30,27 @@ public class ReplayDecoder {
                 if (!goodMagicNumber) {
                     break;
                 }
-                int cryptedSizePart = replayFileReader.getCryptedPartSize();
-                byte[] compressedCrypted = replayFileReader.getCryptedBlock(cryptedSizePart);
+                byte[] compressedCrypted = replayFileReader.getCryptedBlock();
 
                 ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
 
-                String replayExtracted = replay.getName().substring(0, replay.getName().indexOf(".wotreplay"));
-                String decryptedFile = "E:\\replays\\" + replayExtracted + " - Decrypted.dat";
-                File file = new File(decryptedFile);
+                String replayExtracted = replay.getName().substring(0,
+                    replay.getName().indexOf(".wotreplay"));
+                String decryptedFile = "C:\\replays\\" + replayExtracted + " - Decrypted.dat";
+                String JSON = "C:\\replays\\" + replayExtracted + ".json";
+                File file = new File(JSON);
+                try {
+                    FileOutputStream jsonData = new FileOutputStream(file);
+                    jsonData.write(replayFileReader.getFirstBlock().getBytes());
+                    jsonData.write(replayFileReader.getSecondBlock().getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                file = new File(decryptedFile);
 
 
-                String decompressed = "E:\\replays\\" + replayExtracted + " - Decompressed.dat";
+                String decompressed = "C:\\replays\\" + replayExtracted + " - Decompressed.dat";
                 file = new File(decompressed);
                 FileOutputStream decompressFile = null;
                 FileInputStream fis = null;
