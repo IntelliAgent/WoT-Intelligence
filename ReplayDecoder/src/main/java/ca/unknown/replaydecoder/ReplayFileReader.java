@@ -111,11 +111,11 @@ public class ReplayFileReader {
         return crypted;
     }
 
-    public String getFirstJson(int jsonSize) {
-        byte[] json = ByteBuffer.allocate(jsonSize).array();
+    public String getFirstBlock(int blockSize) {
+        byte[] json = ByteBuffer.allocate(blockSize).array();
         try {
             randomAccessFile.seek(POS_FIRST_BLOCK_SIZE + POS_SECOND_BLOCK_SIZE);
-            randomAccessFile.read(json, 0, jsonSize);
+            randomAccessFile.read(json, 0, blockSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
