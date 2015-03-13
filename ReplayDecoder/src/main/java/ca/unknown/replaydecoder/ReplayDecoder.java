@@ -44,6 +44,7 @@ public class ReplayDecoder {
                 file = new File(decompressed);
                 FileOutputStream decompressFile = null;
                 FileInputStream fis = null;
+
                 try {
                     FileOutputStream fos = new FileOutputStream(decryptedFile);
                     System.out.println("Decrypting : " + replayExtracted);
@@ -51,7 +52,13 @@ public class ReplayDecoder {
 
                     fis = new FileInputStream(decryptedFile);
                     decompressFile = new FileOutputStream(decompressed);
+                } catch (Exception e) {
+                    System.err.println("Error at decrypting : " + replayExtracted);
+                    System.err.println(e.getMessage());
+                    continue;
+                }
 
+                try {
                     ReplayDecompressor replayDecompressor = new ReplayDecompressor(fis, decompressFile);
                     System.out.println("Decompressing : " + replayExtracted);
                     byte[] decompressedData = replayDecompressor.unzip();
@@ -59,17 +66,14 @@ public class ReplayDecoder {
                     decompressFile.write(decompressedData);
                     decompressFile.close();
                 } catch (Exception e) {
-                    System.err.println("Error with : " + replayExtracted);
+                    System.err.println("Error at decompressing : " + replayExtracted);
                     System.err.println(e.getMessage());
-                    continue;
                 } finally {
-                    if (decompressFile != null) {
-                        try {
-                            decompressFile.close();
-                            fis.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        decompressFile.close();
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }
