@@ -2,10 +2,8 @@ package ca.unknown.replaydecoder;
 
 import ca.unknown.replaydecoder.decompression.ReplayDecompressor;
 import ca.unknown.replaydecoder.decryption.ReplayDecrypter;
-import ca.unknown.replaydecoder.swapper.ByteSwapper;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
@@ -29,7 +27,7 @@ public class ReplayDecoder {
                     break;
                 }
                 int numberOfJSONBlocks = replayFileReader.getNumberOfJSONBlocks();
-                System.out.println(numberOfJSONBlocks);
+                System.out.println("numberOfJSONBlocks: " + numberOfJSONBlocks);
                 int firstBlockSize = replayFileReader.getFirstJSONBlockSize();
                 int secondBlockSize = replayFileReader.getSecondJSONBlockSize();
                 System.out.println("Second block size: " + secondBlockSize);
@@ -41,26 +39,25 @@ public class ReplayDecoder {
 
                 FileOutputStream fos = null;
                 try {
-                    fos = new FileOutputStream("C:\\Data\\DecryptedData.txt");
-
+                    fos = new FileOutputStream(
+                        "E:\\replays\\" + replay.getName().substring(0, replay.getName().indexOf(".wotreplay"))
+                            + " - Decrypted.dat");
                     fos.write(compressedData);
                     fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 ReplayDecompressor replayDecompressor = new ReplayDecompressor(compressedData);
-                String decompressedData = replayDecompressor.unzip();
+                byte[] decompressedData = replayDecompressor.unzip();
 
                 try {
-                    fos = new FileOutputStream("C:\\Data\\DecompressedData.txt");
+                    fos = new FileOutputStream(
+                        "E:\\replays" + replay.getName().substring(0, replay.getName().indexOf(".wotreplay"))
+                            + " - Decompressed.dat");
 
-                    fos.write(decompressedData.getBytes());
+                    fos.write(decompressedData);
                     fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

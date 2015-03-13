@@ -1,10 +1,12 @@
 package ca.unknown.replaydecoder.decompression;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 /**
@@ -17,30 +19,35 @@ public class ZlibCompression {
     private static final Logger LOG = Logger.getLogger(String.valueOf(ZlibCompression.class));
 
     /**
-     * Decompresses a zlib compressed file.
+     * Compresses a file with zlib compression.
      */
-    public static String decompressFile(byte[] compressed) throws IOException {
-        byte[] output = new byte[compressed.length * 10];
-
+    public static byte[] compressFile(byte[] raw) throws IOException {
         try {
-
-            // Decompress the bytes
-            Inflater decompresser = new Inflater(true);
-            decompresser.setInput(compressed, 0, compressed.length);
-            byte[] result = new byte[100];
-            int resultLength = decompresser.inflate(output);
-            decompresser.end();
-
-            // Decode the bytes into a String
-            return new String(result, 0, resultLength, "UTF-8");
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            Deflater df = new Deflater(Deflater.BEST_COMPRESSION);
+            df.setInput(raw);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(raw.length);
+            df.finish();
+            byte[] buff = new byte[1024];
+            while (!df.finished()) {
+                int count = df.deflate(buff);
+                baos.write(buff, 0, count);
+            }
+            baos.close();
+            byte[] output = baos.toByteArray();
+            return output;
+        } catch (IOException e) {
+            return null;
         }
+    }
 
-        LOG.log(Level.FINE, "Original: " + compressed.length);
-        LOG.log(Level.FINE, "Compressed: " + output.length);
-        return null;
+    public static byte[] decompressData(byte[] input) throws IOException, DataFormatException {
+        // Decompress the bytes
+        Inflater decompresser = new Inflater();
+        decompresser.setInput(input);
+        byte[] dataBytes = new byte[input.length * 10];
+        int resultLength = decompresser.inflate(dataBytes);
+        decompresser.end();
+        return dataBytes;
     }
 
     /**

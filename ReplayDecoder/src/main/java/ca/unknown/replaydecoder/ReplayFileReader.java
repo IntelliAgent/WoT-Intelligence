@@ -43,7 +43,7 @@ public class ReplayFileReader {
     public int getNumberOfJSONBlocks() {
         try {
             randomAccessFile.seek(POS_NUMBER_JSON_BLOCKS);
-            return randomAccessFile.readInt();
+            return ByteSwapper.swap(randomAccessFile.readInt());
         } catch (IOException e) {
             e.printStackTrace();
         }

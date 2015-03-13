@@ -1,7 +1,7 @@
 package ca.unknown.replaydecoder.decompression;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 public class ReplayDecompressor {
 
@@ -12,12 +12,11 @@ public class ReplayDecompressor {
         this.compressedData = compressedData;
     }
 
-    public String unzip() {
+    public byte[] unzip() {
 
         try {
-            String decompressedData = ZlibCompression.decompressFile(compressedData);
-            return decompressedData;
-        } catch (IOException e) {
+            return ZlibCompression.decompressData(compressedData);
+        } catch (IOException | DataFormatException e) {
             e.printStackTrace();
         }
         return null;
