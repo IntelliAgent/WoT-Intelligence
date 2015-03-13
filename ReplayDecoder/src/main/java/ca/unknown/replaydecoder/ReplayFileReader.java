@@ -71,12 +71,12 @@ public class ReplayFileReader {
         return 0;
     }
 
-    public String getSecondBlock(int jsonSize) {
-        byte[] json = ByteBuffer.allocate(jsonSize).array();
+    public String getSecondBlock(int blockSize) {
+        byte[] json = ByteBuffer.allocate(blockSize).array();
         try {
             randomAccessFile.seek(
                 POS_NUMBER_OF_BLOCKS + POS_NUMBER_OF_BLOCKS + getFirstBlockSize() + POS_SECOND_BLOCK_SIZE);
-            randomAccessFile.read(json, 0, jsonSize);
+            randomAccessFile.read(json, 0, blockSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
