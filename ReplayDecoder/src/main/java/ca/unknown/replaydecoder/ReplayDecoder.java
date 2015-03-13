@@ -26,10 +26,10 @@ public class ReplayDecoder {
                 if (!goodMagicNumber) {
                     break;
                 }
-                int numberOfJSONBlocks = replayFileReader.getNumberOfJSONBlocks();
-                System.out.println("numberOfJSONBlocks: " + numberOfJSONBlocks);
-                int firstBlockSize = replayFileReader.getFirstJSONBlockSize();
-                int secondBlockSize = replayFileReader.getSecondJSONBlockSize();
+                int numberOfJSONBlocks = replayFileReader.getNumberOfBlocks();
+                System.out.println(numberOfJSONBlocks);
+                int firstBlockSize = replayFileReader.getFirstBlockSize();
+                int secondBlockSize = replayFileReader.getSecondBlockSize();
                 System.out.println("Second block size: " + secondBlockSize);
                 int cryptedSizePart = replayFileReader.getCryptedPartSize();
                 System.out.println("Crypted sized part : " + cryptedSizePart);
