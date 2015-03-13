@@ -62,8 +62,8 @@ public class ReplayFileReader {
 
     public int getSecondBlockSize() {
         try {
-            int positionSecondJson = POS_NUMBER_OF_BLOCKS + POS_FIRST_BLOCK_SIZE + getFirstBlockSize();
-            randomAccessFile.seek(positionSecondJson);
+            int posSecondBlock = POS_NUMBER_OF_BLOCKS + POS_FIRST_BLOCK_SIZE + getFirstBlockSize();
+            randomAccessFile.seek(posSecondBlock);
             return ByteSwapper.swap(randomAccessFile.readInt());
         } catch (IOException e) {
             e.printStackTrace();
