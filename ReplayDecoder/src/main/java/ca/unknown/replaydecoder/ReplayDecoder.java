@@ -4,13 +4,16 @@ import ca.unknown.replaydecoder.decompression.ReplayDecompressor;
 import ca.unknown.replaydecoder.decryption.ReplayDecrypter;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class ReplayDecoder {
 
+
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input replay path:");
         String filename = scanner.nextLine();
@@ -21,45 +24,53 @@ public class ReplayDecoder {
 
         for (File replay : listOfReplays) {
             if (replay.isFile() && replay.getName().endsWith(".wotreplay")) {
+
                 ReplayFileReader replayFileReader = new ReplayFileReader(replay);
                 boolean goodMagicNumber = replayFileReader.validateMagicNumber();
                 if (!goodMagicNumber) {
                     break;
                 }
-                int numberOfJSONBlocks = replayFileReader.getNumberOfBlocks();
-                System.out.println(numberOfJSONBlocks);
-                int firstBlockSize = replayFileReader.getFirstBlockSize();
-                int secondBlockSize = replayFileReader.getSecondBlockSize();
-                System.out.println("Second block size: " + secondBlockSize);
                 int cryptedSizePart = replayFileReader.getCryptedPartSize();
-                System.out.println("Crypted sized part : " + cryptedSizePart);
                 byte[] compressedCrypted = replayFileReader.getCryptedBlock(cryptedSizePart);
+
                 ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
-                byte[] compressedData = replayDecrypter.decrypt();
 
-                FileOutputStream fos = null;
+                String replayExtracted = replay.getName().substring(0, replay.getName().indexOf(".wotreplay"));
+                String decryptedFile = "E:\\replays\\" + replayExtracted + " - Decrypted.dat";
+                File file = new File(decryptedFile);
+
+
+                String decompressed = "E:\\replays\\" + replayExtracted + " - Decompressed.dat";
+                file = new File(decompressed);
+                FileOutputStream decompressFile = null;
+                FileInputStream fis = null;
                 try {
-                    fos = new FileOutputStream(
-                        "E:\\replays\\" + replay.getName().substring(0, replay.getName().indexOf(".wotreplay"))
-                            + " - Decrypted.dat");
-                    fos.write(compressedData);
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    FileOutputStream fos = new FileOutputStream(decryptedFile);
+                    System.out.println("Decrypting : " + replayExtracted);
+                    replayDecrypter.decrypt(fos);
 
-                ReplayDecompressor replayDecompressor = new ReplayDecompressor(compressedData);
-                byte[] decompressedData = replayDecompressor.unzip();
+                    fis = new FileInputStream(decryptedFile);
+                    decompressFile = new FileOutputStream(decompressed);
 
-                try {
-                    fos = new FileOutputStream(
-                        "E:\\replays" + replay.getName().substring(0, replay.getName().indexOf(".wotreplay"))
-                            + " - Decompressed.dat");
+                    ReplayDecompressor replayDecompressor = new ReplayDecompressor(fis, decompressFile);
+                    System.out.println("Decompressing : " + replayExtracted);
+                    byte[] decompressedData = replayDecompressor.unzip();
 
-                    fos.write(decompressedData);
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    decompressFile.write(decompressedData);
+                    decompressFile.close();
+                } catch (Exception e) {
+                    System.err.println("Error with : " + replayExtracted);
+                    System.err.println(e.getMessage());
+                    continue;
+                } finally {
+                    if (decompressFile != null) {
+                        try {
+                            decompressFile.close();
+                            fis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }

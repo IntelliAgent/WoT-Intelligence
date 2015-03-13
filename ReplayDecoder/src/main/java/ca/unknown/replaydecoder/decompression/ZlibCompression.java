@@ -1,9 +1,6 @@
 package ca.unknown.replaydecoder.decompression;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -40,11 +37,22 @@ public class ZlibCompression {
         }
     }
 
-    public static byte[] decompressData(byte[] input) throws IOException, DataFormatException {
+    public static byte[] decompressData(FileInputStream fileInputStream) throws IOException, DataFormatException {
         // Decompress the bytes
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        try {
+            for (int readNum; (readNum = fileInputStream.read(buf)) != -1; ) {
+                bos.write(buf, 0, readNum);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        byte[] bytes = bos.toByteArray();
+
         Inflater decompresser = new Inflater();
-        decompresser.setInput(input);
-        byte[] dataBytes = new byte[input.length * 10];
+        decompresser.setInput(bytes);
+        byte[] dataBytes = new byte[bytes.length * 8];
         int resultLength = decompresser.inflate(dataBytes);
         decompresser.end();
         return dataBytes;

@@ -90,8 +90,8 @@ public class ReplayFileReader {
         try {
             randomAccessFile.seek(positionCryptedPart);
             return ByteSwapper.swap(randomAccessFile.readInt());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
+
         }
         return 0;
     }
@@ -100,13 +100,12 @@ public class ReplayFileReader {
         int positionCryptedPart =
             POS_NUMBER_OF_BLOCKS + POS_FIRST_BLOCK_SIZE + getFirstBlockSize() + POS_SECOND_BLOCK_SIZE
                 + getSecondBlockSize() + OFFSET_CRYPTED_SIZE + 4;
-        System.out.println(positionCryptedPart);
         byte[] crypted = ByteBuffer.allocate(cryptedSize).array();
         try {
             randomAccessFile.seek(positionCryptedPart);
             randomAccessFile.read(crypted, 0, cryptedSize);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
+
         }
         return crypted;
     }
