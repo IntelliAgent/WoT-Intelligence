@@ -17,7 +17,7 @@ public class JsoupHtmlScrapperTest {
 		HtmlScrapper scrapper = new JsoupHtmlScrapper(entryPoint);
 		Action followLink = new FollowLinkAction(new AttributeTarget("a.next","href"));
 		scrapper.addPostAction(followLink);
-		scrapper.setTarget(new AttributeTarget("img","title"));
+		scrapper.setTarget(new AttributeTarget("#comic>img","title"));
 		
 		for(int i = 0; i < 10; i++){
 			scrapper.scrapeTarget();
