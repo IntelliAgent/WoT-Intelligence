@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import ca.unknown.scrapper.action.Action;
 import ca.unknown.scrapper.action.FollowLinkAction;
+import ca.unknown.scrapper.action.ScrapeAction;
+import ca.unknown.scrapper.invoker.ConcreteInvoker;
+import ca.unknown.scrapper.invoker.Invoker;
 import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
 
 public class JsoupHtmlScrapperTest {
@@ -15,15 +18,18 @@ public class JsoupHtmlScrapperTest {
 	@Test
 	public void test() {
 		HtmlScrapper scrapper = new JsoupHtmlScrapper(entryPoint);
-		Action followLink = new FollowLinkAction(new AttributeTarget("a.next","href"));
-		scrapper.addPostAction(followLink);
-		scrapper.setTarget(new AttributeTarget("#comic>img","title"));
 		
-		for(int i = 0; i < 10; i++){
-			scrapper.scrapeTarget();
-		}
+		Action scrape		= new ScrapeAction(scrapper, new AttributeTarget("#comic>img","title"));
+		Action followLink 	= new FollowLinkAction(scrapper, new AttributeTarget("a.next","href"));
 		
-		for(String scrapeResult : scrapper.getScrapeTargetResult())
+		scrape.setCallback(followLink);
+		followLink.setCallback(scrape);
+		
+		Invoker invoker 	= new ConcreteInvoker(scrape);
+		
+		invoker.start();
+		
+		for(String scrapeResult : scrapper.getScrapeResult())
 			System.out.println(scrapeResult);
 	}
 

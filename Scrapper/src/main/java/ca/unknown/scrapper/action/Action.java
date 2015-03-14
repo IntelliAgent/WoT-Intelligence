@@ -15,4 +15,12 @@ public interface Action {
 	 * 
 	 */
 	public void execute();
+	/**
+	 * 
+	 */
+	public void setCallback(Action callback);
+	/**
+	 * 
+	 */
+	public void setFailureCallback(Action callback);
 }

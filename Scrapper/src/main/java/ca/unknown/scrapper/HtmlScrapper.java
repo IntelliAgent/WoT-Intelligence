@@ -22,9 +22,7 @@ import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
  * 	for html. Specifically, a scrapper may not download any content from a page.
  *
  */
-public interface HtmlScrapper {
-	public void setTarget(ScrapeTarget target);
-	
+public interface HtmlScrapper {	
 	public void followLink(FollowLinkAction followLinkAction);
 	
 	public void changePage(String url);
@@ -37,9 +35,13 @@ public interface HtmlScrapper {
 	
 	public void setEntryPointAction(Action entryPointAction);
 	
-	public void scrapeTarget();
+	public void scrape(ScrapeTarget target);
 	
-	public List<String> shallowScrape(ScrapeTarget target);
+	public boolean shallowScrape(ScrapeTarget target);
 	
-	public List<String> getScrapeTargetResult();
+	public List<String> getShallowScrapeResult();
+	
+	public List<String> getScrapeResult();
+	
+	public void clearScrapeResult();
 }

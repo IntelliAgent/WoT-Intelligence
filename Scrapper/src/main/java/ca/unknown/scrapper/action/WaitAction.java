@@ -13,7 +13,11 @@ public class WaitAction extends AbstractAction{
 	
 	@Override
 	public void execute() {
-		
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

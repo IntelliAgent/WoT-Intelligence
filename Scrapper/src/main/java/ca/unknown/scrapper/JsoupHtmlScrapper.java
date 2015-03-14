@@ -29,8 +29,8 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	
 	private List<String> scrapeResult = new ArrayList<String>();
 	
-	private ScrapeTarget target;
-	
+	List<String> shallowScrapeResult;
+		
 	private List<Action> preTargetActions = new ArrayList<Action>();
 	
 	private List<Action> postTargetActions = new ArrayList<Action>();
@@ -42,11 +42,6 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	 */
 	public JsoupHtmlScrapper(String entryPoint){
 		changePage(entryPoint);
-	}
-	
-	@Override
-	public void setTarget(ScrapeTarget target) {
-		this.target = target;
 	}
 
 	@Override
@@ -65,20 +60,16 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	}
 
 	@Override
-	public void scrapeTarget() {
-		executeActions(preTargetActions);
-		
+	public void scrape(ScrapeTarget target) {		
 		Elements selection = currentPage.select(target.getSelectString());
 		
 		for(Element elem : selection)
 			scrapeResult.add(target.retrieveTarget(elem));
-			
-		executeActions(postTargetActions);
 	}
 
 	@Override
 	public void followLink(FollowLinkAction followLinkAction) {
-		followLinkAction.execute(this);		
+		followLinkAction.execute();		
 	}
 
 	@Override
@@ -94,30 +85,39 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	}
 
 	@Override
-	public List<String> getScrapeTargetResult() {
+	public List<String> getScrapeResult() {
 		return scrapeResult;
+	}
+	
+	@Override
+	public List<String> getShallowScrapeResult(){
+		return shallowScrapeResult;
 	}
 
 	@Override
 	public String getCurrentPageUrl() {
 		return currentPageUrl;
 	}
-	
-	private void executeActions(List<Action> actions){
-		for(Action action : actions)
-			action.execute(this);
-	}
 
 	@Override
-	public List<String> shallowScrape(ScrapeTarget target) {
-		List<String> shallowScrapeResult = new ArrayList<String>();
+	public boolean shallowScrape(ScrapeTarget target) {
+		shallowScrapeResult = new ArrayList<String>();
 		
 		Elements selection = currentPage.select(target.getSelectString());
 		
 		for(Element elem : selection)
 			shallowScrapeResult.add(target.retrieveTarget(elem));
 		
-		return shallowScrapeResult;
+		return !shallowScrapeResult.isEmpty();
 	}
 	
+	@Override
+	public void clearScrapeResult() {
+		scrapeResult.clear();
+	}
+	
+	private void executeActions(List<Action> actions){
+		for(Action action : actions)
+			action.execute();
+	}
 }
