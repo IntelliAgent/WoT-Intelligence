@@ -2,6 +2,8 @@ package ca.unknown.scrapper;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +23,9 @@ import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
  */
 public class JsoupHtmlScrapper implements HtmlScrapper {
 	
-	private static final int TIMEOUT = 5000;
+	private static final int TIMEOUT = 50000;
 	
-	private String currentPageUrl;
+	private URI currentPageUrl;
 	
 	private Document currentPage;
 	
@@ -74,9 +76,24 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 
 	@Override
 	public void changePage(String url) {
-		currentPageUrl = url;
-		try{			
-			currentPage = Jsoup.parse(new URL(url),TIMEOUT);
+		try {
+			currentPageUrl = new URI(url);
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if(!currentPageUrl.isAbsolute())
+			try {
+				currentPageUrl = new URI(currentPage.baseUri() + url);
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		System.out.println("Going to " + currentPageUrl);
+		try{
+			currentPage = Jsoup.parse(currentPageUrl.toURL(),TIMEOUT);
 		}catch(MalformedURLException e){
 			e.printStackTrace();
 		}catch(IOException e){
@@ -96,7 +113,7 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 
 	@Override
 	public String getCurrentPageUrl() {
-		return currentPageUrl;
+		return currentPageUrl.toString();
 	}
 
 	@Override
