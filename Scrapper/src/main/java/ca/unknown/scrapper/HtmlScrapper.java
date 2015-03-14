@@ -4,7 +4,7 @@ import java.util.List;
 
 import ca.unknown.scrapper.action.Action;
 import ca.unknown.scrapper.action.FollowLinkAction;
-import ca.unknown.scrapper.target.Target;
+import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
 
 /**
  * 
@@ -23,7 +23,7 @@ import ca.unknown.scrapper.target.Target;
  *
  */
 public interface HtmlScrapper {
-	public void setTarget(Target target);
+	public void setTarget(ScrapeTarget target);
 	
 	public void followLink(FollowLinkAction followLinkAction);
 	
@@ -39,7 +39,7 @@ public interface HtmlScrapper {
 	
 	public void scrapeTarget();
 	
-	public List<String> shallowScrape(Target target);
+	public List<String> shallowScrape(ScrapeTarget target);
 	
 	public List<String> getScrapeTargetResult();
 }

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ca.unknown.scrapper.action.Action;
 import ca.unknown.scrapper.action.FollowLinkAction;
-import ca.unknown.scrapper.target.AttributeTarget;
+import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
 
 public class JsoupHtmlScrapperTest {
 

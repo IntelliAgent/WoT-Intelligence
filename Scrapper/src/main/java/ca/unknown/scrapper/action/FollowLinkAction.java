@@ -1,7 +1,7 @@
 package ca.unknown.scrapper.action;
 
 import ca.unknown.scrapper.HtmlScrapper;
-import ca.unknown.scrapper.target.AttributeTarget;
+import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
 
 public class FollowLinkAction implements Action{
 

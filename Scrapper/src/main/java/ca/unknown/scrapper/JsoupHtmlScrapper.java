@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 
 import ca.unknown.scrapper.action.Action;
 import ca.unknown.scrapper.action.FollowLinkAction;
-import ca.unknown.scrapper.target.Target;
+import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
 
 /**
  * Jsoup based implementation of scrapper interface
@@ -29,7 +29,7 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	
 	private List<String> scrapeResult = new ArrayList<String>();
 	
-	private Target target;
+	private ScrapeTarget target;
 	
 	private List<Action> preTargetActions = new ArrayList<Action>();
 	
@@ -45,7 +45,7 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	}
 	
 	@Override
-	public void setTarget(Target target) {
+	public void setTarget(ScrapeTarget target) {
 		this.target = target;
 	}
 
@@ -109,7 +109,7 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	}
 
 	@Override
-	public List<String> shallowScrape(Target target) {
+	public List<String> shallowScrape(ScrapeTarget target) {
 		List<String> shallowScrapeResult = new ArrayList<String>();
 		
 		Elements selection = currentPage.select(target.getSelectString());
