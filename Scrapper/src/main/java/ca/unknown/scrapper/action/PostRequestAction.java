@@ -4,16 +4,16 @@ import java.util.Map;
 
 import ca.unknown.scrapper.HtmlScrapper;
 
-public class PostRequestAction implements Action{
+public class PostRequestAction extends AbstractAction{
 
 	Map<String,String> postParam;
 	
-	public PostRequestAction(){
-		
+	public PostRequestAction(HtmlScrapper scrapper){
+		super(scrapper);
 	}
 	
 	@Override
-	public void execute(HtmlScrapper htmlScrapper) {
+	public void execute() {
 		// TODO Auto-generated method stub
 		
 	}

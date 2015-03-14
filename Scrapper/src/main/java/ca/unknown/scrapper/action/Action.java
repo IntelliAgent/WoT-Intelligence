@@ -14,5 +14,5 @@ public interface Action {
 	/**
 	 * 
 	 */
-	public void execute(HtmlScrapper htmlScrapper);
+	public void execute();
 }

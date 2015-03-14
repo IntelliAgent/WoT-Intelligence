@@ -3,26 +3,28 @@ package ca.unknown.scrapper.action;
 import ca.unknown.scrapper.HtmlScrapper;
 import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
 
-public class FollowLinkAction implements Action{
+public class FollowLinkAction extends AbstractAction{
 
 	String linkUrl;
 
 	AttributeTarget attrTarget;
 	
-	public FollowLinkAction(String url){
+	public FollowLinkAction(HtmlScrapper scrapper, String url){
+		super(scrapper);
 		this.linkUrl = url;
 	}
 	
-	public FollowLinkAction(AttributeTarget target){
+	public FollowLinkAction(HtmlScrapper scrapper, AttributeTarget target){
+		super(scrapper);
 		this.attrTarget = target;
 	}
 	
 	@Override
-	public void execute(HtmlScrapper htmlScrapper) {
+	public void execute() {
 		if(attrTarget != null){
-			linkUrl = htmlScrapper.shallowScrape(attrTarget).get(0);
+			linkUrl = scrapper.shallowScrape(attrTarget).get(0);
 		}
-		htmlScrapper.changePage(linkUrl);
+		scrapper.changePage(linkUrl);
 	}
 
 }
