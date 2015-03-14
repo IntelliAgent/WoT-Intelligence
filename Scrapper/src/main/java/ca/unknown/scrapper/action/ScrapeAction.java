@@ -15,5 +15,6 @@ public class ScrapeAction extends AbstractAction {
 	@Override
 	public void execute(){
 		scrapper.scrape(target);
+		successCallback.execute();
 	}
 }
