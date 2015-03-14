@@ -12,12 +12,14 @@ public class WaitAction extends AbstractAction{
 	}
 	
 	@Override
-	public void execute() {
+	public Action execute() {
 		try {
 			Thread.sleep(ms);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			return failureCallback;
 		}
+		return successCallback;
 	}
 
 }

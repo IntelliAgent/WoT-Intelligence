@@ -11,11 +11,4 @@ public class PostRequestAction extends AbstractAction{
 	public PostRequestAction(HtmlScrapper scrapper){
 		super(scrapper);
 	}
-	
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

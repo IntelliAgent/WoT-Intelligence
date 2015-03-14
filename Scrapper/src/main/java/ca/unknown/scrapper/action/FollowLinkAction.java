@@ -20,15 +20,15 @@ public class FollowLinkAction extends AbstractAction{
 	}
 	
 	@Override
-	public void execute() {
+	public Action execute() {
 		if(attrTarget != null){
 			if(scrapper.shallowScrape(attrTarget)){
 				linkUrl = scrapper.getShallowScrapeResult().get(0);
 				scrapper.changePage(linkUrl);
-				successCallback.execute();
 			}else{
-				failureCallback.execute();
+				return failureCallback;
 			}
 		}
+		return successCallback;
 	}
 }

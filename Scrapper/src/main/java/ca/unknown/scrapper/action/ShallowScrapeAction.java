@@ -13,8 +13,10 @@ public class ShallowScrapeAction extends AbstractAction {
 	}
 	
 	@Override
-	public void execute(){
+	public Action execute(){
 		scrapper.shallowScrape(target);
+		
+		return successCallback;
 	}
 
 }
