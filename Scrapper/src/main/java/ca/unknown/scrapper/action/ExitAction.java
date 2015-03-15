@@ -4,8 +4,8 @@ import ca.unknown.scrapper.HtmlScrapper;
 
 public class ExitAction extends AbstractAction {
 
-	public ExitAction(HtmlScrapper scrapper) {
-		super(scrapper);
-	}
+    public ExitAction(HtmlScrapper scrapper) {
+        super(scrapper);
+    }
 
 }

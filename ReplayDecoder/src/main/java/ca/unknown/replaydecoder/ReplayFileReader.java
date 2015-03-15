@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -24,22 +25,30 @@ public class ReplayFileReader {
     public ReplayFileReader(File file) {
         try {
             randomAccessFile = new RandomAccessFile(file, "r");
-            int startPointer = 8;
-            int blockNumber = 1;
-            randomAccessFile.seek(4);
-            numberOfBlocks = ByteSwapper.swap(randomAccessFile.readInt());
-
-            while (numberOfBlocks >= 1) {
-                randomAccessFile.seek(startPointer);
-                dataBlockSize.put(blockNumber, ByteSwapper.swap(randomAccessFile.readInt()));
-                dataBlockPosition.put(blockNumber, startPointer + 4);
-                startPointer = dataBlockPosition.get(blockNumber) + dataBlockSize.get(blockNumber);
-                numberOfBlocks--;
-                blockNumber++;
-            }
-
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public void init() throws IOException {
+        int startPointer = 8;
+        int blockNumber = 1;
+        randomAccessFile.seek(4);
+        numberOfBlocks = ByteSwapper.swap(randomAccessFile.readInt());
+
+        System.out.println("Number of blocks : " + numberOfBlocks);
+        if (numberOfBlocks == 0) {
+            return;
+        }
+
+        while (numberOfBlocks >= 1) {
+            randomAccessFile.seek(startPointer);
+            dataBlockSize.put(blockNumber, ByteSwapper.swap(randomAccessFile.readInt()));
+            dataBlockPosition.put(blockNumber, startPointer + 4);
+            startPointer = dataBlockPosition.get(blockNumber) + dataBlockSize.get(blockNumber);
+            numberOfBlocks--;
+            blockNumber++;
         }
     }
 
