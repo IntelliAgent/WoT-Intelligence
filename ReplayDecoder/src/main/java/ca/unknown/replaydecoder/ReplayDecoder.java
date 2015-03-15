@@ -9,6 +9,8 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -46,6 +48,8 @@ public abstract class ReplayDecoder {
             System.out.println("Decompressing : " + replayExtracted);
             byte[] decompressedData = replayDecompressor.unzip();
             decompressFile.write(decompressedData);
+            fis.close();
+            Files.delete(Paths.get(decryptedFile));
 
         } catch (NoSuchPaddingException | BadPaddingException | NoSuchAlgorithmException | IllegalBlockSizeException | IOException | InvalidKeyException e) {
             System.err.println(e.getMessage());
