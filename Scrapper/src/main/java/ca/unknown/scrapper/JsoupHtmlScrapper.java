@@ -1,23 +1,20 @@
 package ca.unknown.scrapper;
 
+import ca.unknown.scrapper.action.FollowLinkAction;
+import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import ca.unknown.scrapper.action.FollowLinkAction;
-import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
-
 /**
  * Jsoup based implementation of scrapper interface
- *
  */
 public class JsoupHtmlScrapper implements HtmlScrapper {
 	

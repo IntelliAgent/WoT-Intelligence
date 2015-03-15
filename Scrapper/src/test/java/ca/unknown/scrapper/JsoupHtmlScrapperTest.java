@@ -8,15 +8,16 @@ import java.util.Collection;
 import org.junit.Test;
 
 import ca.unknown.scrapper.action.Action;
+import ca.unknown.scrapper.action.ExitAction;
 import ca.unknown.scrapper.action.FollowLinkAction;
 import ca.unknown.scrapper.action.ScrapeAction;
-import ca.unknown.scrapper.action.ExitAction;
 import ca.unknown.scrapper.invoker.ConcreteInvoker;
 import ca.unknown.scrapper.invoker.Invoker;
 import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
+import org.junit.Test;
 
 public class JsoupHtmlScrapperTest {
-
+	
 	@Test
 	public void shouldPrintABunchOfRelativeLinkComingFromTheVbAddictBattleHistoryTable() {
 		String entryPoint = "http://www.vbaddict.net/battlehistory.php?go=search";
@@ -49,5 +50,4 @@ public class JsoupHtmlScrapperTest {
 	public void shouldStartThreeAsynchronousExecutionForScrapeResult(){
 		
 	}
-
 }

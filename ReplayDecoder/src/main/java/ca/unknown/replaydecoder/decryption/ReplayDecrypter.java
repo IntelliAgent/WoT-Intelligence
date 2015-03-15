@@ -24,12 +24,6 @@ public class ReplayDecrypter {
         this.bytes = bytes;
     }
 
-    public void decrypt(FileOutputStream replayDecrypted)
-        throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException,
-        IllegalBlockSizeException, InvalidKeyException {
-        decryptBlowfish(bytes, replayDecrypted);
-    }
-
     private static void decryptBlowfish(byte[] to_decrypt, FileOutputStream replayDecrypted)
         throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException,
         IllegalBlockSizeException, InvalidKeyException {
@@ -79,6 +73,12 @@ public class ReplayDecrypter {
         }
 
         return xor;
+    }
+
+    public void decrypt(FileOutputStream replayDecrypted)
+        throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException,
+        IllegalBlockSizeException, InvalidKeyException {
+        decryptBlowfish(bytes, replayDecrypted);
     }
 
 

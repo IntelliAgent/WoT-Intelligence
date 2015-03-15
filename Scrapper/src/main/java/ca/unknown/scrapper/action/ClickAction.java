@@ -4,7 +4,7 @@ import ca.unknown.scrapper.HtmlScrapper;
 
 public class ClickAction extends AbstractAction {
 
-	public ClickAction(HtmlScrapper scrapper){
-		super(scrapper);
-	}
+    public ClickAction(HtmlScrapper scrapper) {
+        super(scrapper);
+    }
 }

@@ -6,7 +6,7 @@ import ca.unknown.scrapper.HtmlScrapper;
 import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
 
 public class ScrapeAction extends AbstractAction {
-
+	
 	ScrapeTarget target;
 
 	Collection<String> memory;

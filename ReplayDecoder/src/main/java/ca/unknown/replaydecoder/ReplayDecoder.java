@@ -34,8 +34,7 @@ public class ReplayDecoder {
 
                 ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
 
-                String replayExtracted = replay.getName().substring(0,
-                    replay.getName().indexOf(".wotreplay"));
+                String replayExtracted = replay.getName().substring(0, replay.getName().indexOf(".wotreplay"));
                 String decryptedFile = "C:\\replays\\" + replayExtracted + " - Decrypted.dat";
                 String JSON = "C:\\replays\\" + replayExtracted + ".json";
                 File file = new File(JSON);

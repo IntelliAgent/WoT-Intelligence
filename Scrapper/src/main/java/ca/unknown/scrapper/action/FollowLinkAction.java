@@ -3,9 +3,9 @@ package ca.unknown.scrapper.action;
 import ca.unknown.scrapper.HtmlScrapper;
 import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
 
-public class FollowLinkAction extends AbstractAction{
+public class FollowLinkAction extends AbstractAction {
 
-	String linkUrl;
+    String linkUrl;
 
 	AttributeTarget attrTarget;
 	
