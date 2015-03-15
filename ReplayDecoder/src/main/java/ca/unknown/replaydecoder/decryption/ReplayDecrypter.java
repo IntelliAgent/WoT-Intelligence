@@ -24,9 +24,7 @@ public class ReplayDecrypter {
         this.bytes = bytes;
     }
 
-    private static void decryptBlowfish(byte[] to_decrypt, FileOutputStream replayDecrypted)
-        throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException,
-        IllegalBlockSizeException, InvalidKeyException {
+    private static void decryptBlowfish(byte[] to_decrypt, FileOutputStream replayDecrypted) {
         try {
             SecretKeySpec key = new SecretKeySpec(KEY, "Blowfish");
             Cipher cipher = Cipher.getInstance("Blowfish/ECB/NoPadding");
@@ -53,9 +51,12 @@ public class ReplayDecrypter {
             replayDecrypted.write(previous, 0, 8);
             replayDecrypted.close();
 
-        } catch (Exception e) {
-            throw e;
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IOException | IllegalBlockSizeException | InvalidKeyException e) {
+            System.err.println(e.getMessage());
         }
+
+
+
     }
 
     /**

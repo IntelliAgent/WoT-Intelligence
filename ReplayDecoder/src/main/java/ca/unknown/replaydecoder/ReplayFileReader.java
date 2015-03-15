@@ -17,12 +17,14 @@ import java.util.Map;
 public class ReplayFileReader {
 
     private static final String MAGIC_NUMBER = "12323411";
+    private final File file;
     private int numberOfBlocks;
     private Map<Integer, Integer> dataBlockSize = new HashMap<>();
     private Map<Integer, Integer> dataBlockPosition = new HashMap<>();
     private RandomAccessFile randomAccessFile;
 
     public ReplayFileReader(File file) {
+        this.file = file;
         try {
             randomAccessFile = new RandomAccessFile(file, "r");
         } catch (FileNotFoundException e) {
@@ -31,24 +33,33 @@ public class ReplayFileReader {
 
     }
 
-    public void init() throws IOException {
+    public int getNumberOfBlocks() {
+        return numberOfBlocks;
+    }
+
+    public void init() {
         int startPointer = 8;
         int blockNumber = 1;
-        randomAccessFile.seek(4);
-        numberOfBlocks = ByteSwapper.swap(randomAccessFile.readInt());
+        try {
+            randomAccessFile.seek(4);
 
-        System.out.println("Number of blocks : " + numberOfBlocks);
-        if (numberOfBlocks == 0) {
-            return;
-        }
+            numberOfBlocks = ByteSwapper.swap(randomAccessFile.readInt());
+            int tmpNumberOfBlocks = numberOfBlocks;
+            System.out.println("Number of blocks : " + numberOfBlocks);
+            if (numberOfBlocks == 0) {
+                return;
+            }
 
-        while (numberOfBlocks >= 1) {
-            randomAccessFile.seek(startPointer);
-            dataBlockSize.put(blockNumber, ByteSwapper.swap(randomAccessFile.readInt()));
-            dataBlockPosition.put(blockNumber, startPointer + 4);
-            startPointer = dataBlockPosition.get(blockNumber) + dataBlockSize.get(blockNumber);
-            numberOfBlocks--;
-            blockNumber++;
+            while (tmpNumberOfBlocks >= 1) {
+                randomAccessFile.seek(startPointer);
+                dataBlockSize.put(blockNumber, ByteSwapper.swap(randomAccessFile.readInt()));
+                dataBlockPosition.put(blockNumber, startPointer + 4);
+                startPointer = dataBlockPosition.get(blockNumber) + dataBlockSize.get(blockNumber);
+                tmpNumberOfBlocks--;
+                blockNumber++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -88,8 +99,7 @@ public class ReplayFileReader {
     }
 
     public int getCryptedPartSize() {
-        int positionCryptedPart = dataBlockPosition.get(2) + getBlockSize(2);
-        System.out.println(positionCryptedPart);
+        int positionCryptedPart = dataBlockPosition.get(numberOfBlocks) + getBlockSize(numberOfBlocks);
         try {
             randomAccessFile.seek(positionCryptedPart);
             return ByteSwapper.swap(randomAccessFile.readInt());
@@ -100,7 +110,7 @@ public class ReplayFileReader {
     }
 
     public byte[] getCryptedBlock() {
-        int positionCryptedPart = getBlockPosition(2) + getBlockSize(2) + 4;
+        int positionCryptedPart = getBlockPosition(numberOfBlocks) + getBlockSize(numberOfBlocks) + 8;
         int cryptedSize = getCryptedPartSize();
 
         byte[] crypted = ByteBuffer.allocate(cryptedSize).array();
@@ -130,5 +140,9 @@ public class ReplayFileReader {
         JsonParser jp = new JsonParser();
         JsonElement je = jp.parse(buffer.toString());
         return gson.toJson(je);
+    }
+
+    public String getReplayName() {
+        return file.getName();
     }
 }

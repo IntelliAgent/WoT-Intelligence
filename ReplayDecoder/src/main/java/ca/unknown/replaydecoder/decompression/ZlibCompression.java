@@ -52,7 +52,7 @@ public class ZlibCompression {
 
         Inflater decompresser = new Inflater();
         decompresser.setInput(bytes);
-        byte[] dataBytes = new byte[bytes.length * 8];
+        byte[] dataBytes = new byte[10*1024*1024];
         int resultLength = decompresser.inflate(dataBytes);
         decompresser.end();
         return dataBytes;
