@@ -2,6 +2,9 @@ package ca.unknown.scrapper;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.junit.Test;
 
 import ca.unknown.scrapper.action.Action;
@@ -13,15 +16,17 @@ import ca.unknown.scrapper.invoker.Invoker;
 import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
 
 public class JsoupHtmlScrapperTest {
-	String entryPoint = "http://www.vbaddict.net/battlehistory.php?go=search";
-	
-	String replayPageLinkSelection = "#table-statistics tr td:last-child a";
-	
+
 	@Test
-	public void test() {
-		HtmlScrapper scrapper = new JsoupHtmlScrapper(entryPoint);
+	public void shouldPrintABunchOfRelativeLinkComingFromTheVbAddictBattleHistoryTable() {
+		String entryPoint = "http://www.vbaddict.net/battlehistory.php?go=search";
 		
-		Action scrape		= new ScrapeAction(scrapper, new AttributeTarget(replayPageLinkSelection,"href"));
+		String replayPageLinkSelection = "#table-statistics tr td:last-child a";
+		
+		HtmlScrapper scrapper = new JsoupHtmlScrapper(entryPoint);
+		Collection<String> scraps = new ArrayList<String>();
+		
+		Action scrape		= new ScrapeAction(scrapper, new AttributeTarget(replayPageLinkSelection,"href"), scraps);
 		Action followLink 	= new FollowLinkAction(scrapper, new AttributeTarget("a[rel=next]","href"));
 		Action exit 		= new ExitAction(scrapper);
 				
@@ -36,8 +41,13 @@ public class JsoupHtmlScrapperTest {
 		
 		System.out.println("Number of scrap element " + scrapper.getScrapeResult().size());
 		
-		for(String scrapeResult : scrapper.getScrapeResult())
+		for(String scrapeResult : scraps)
 			System.out.println(scrapeResult);
+	}
+	
+	@Test
+	public void shouldStartThreeAsynchronousExecutionForScrapeResult(){
+		
 	}
 
 }

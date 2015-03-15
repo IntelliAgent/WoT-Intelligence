@@ -1,13 +1,10 @@
 package ca.unknown.scrapper.action;
 
-import ca.unknown.scrapper.HtmlScrapper;
-
 /**
  * 
  * @author TheCoconutChef
  *
- *	Defines actions the scrapper must perform during / before 
- *	or after a given target is being scrapped
+ *	Defines actions to be performed by the scrapper
  *
  */
 public interface Action {

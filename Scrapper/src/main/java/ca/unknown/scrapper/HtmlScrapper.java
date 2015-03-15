@@ -28,19 +28,9 @@ public interface HtmlScrapper {
 	public void changePage(String url);
 	
 	public String getCurrentPageUrl();
-	
-	public void addPreAction(Action preTargetAction);
-	
-	public void addPostAction(Action postTargetAction);
-	
-	public void setEntryPointAction(Action entryPointAction);
-	
-	public void scrape(ScrapeTarget target);
-	
-	public boolean shallowScrape(ScrapeTarget target);
-	
-	public List<String> getShallowScrapeResult();
-	
+		
+	public boolean scrape(ScrapeTarget target);
+			
 	public List<String> getScrapeResult();
 	
 	public void clearScrapeResult();

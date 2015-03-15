@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import ca.unknown.scrapper.action.Action;
 import ca.unknown.scrapper.action.FollowLinkAction;
 import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
 
@@ -30,14 +28,7 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	private Document currentPage;
 	
 	private List<String> scrapeResult = new ArrayList<String>();
-	
-	List<String> shallowScrapeResult;
-		
-	private List<Action> preTargetActions = new ArrayList<Action>();
-	
-	private List<Action> postTargetActions = new ArrayList<Action>();
-	
-	private Action entryPointAction;
+			
 	
 	/**
 	 * Empty JsoupScrapper constructor
@@ -47,26 +38,15 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	}
 
 	@Override
-	public void addPreAction(Action preTargetAction) {
-		this.preTargetActions.add(preTargetAction);
-	}
-
-	@Override
-	public void addPostAction(Action postTargetAction) {
-		this.postTargetActions.add(postTargetAction);
-	}
-
-	@Override
-	public void setEntryPointAction(Action entryPointAction) {
-		this.entryPointAction = entryPointAction;
-	}
-
-	@Override
-	public void scrape(ScrapeTarget target) {		
+	public boolean scrape(ScrapeTarget target) {		
+		scrapeResult.clear();
+		
 		Elements selection = currentPage.select(target.getSelectString());
 		
 		for(Element elem : selection)
 			scrapeResult.add(target.retrieveTarget(elem));
+		
+		return !scrapeResult.isEmpty();
 	}
 
 	@Override
@@ -105,36 +85,14 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	public List<String> getScrapeResult() {
 		return scrapeResult;
 	}
-	
-	@Override
-	public List<String> getShallowScrapeResult(){
-		return shallowScrapeResult;
-	}
 
 	@Override
 	public String getCurrentPageUrl() {
 		return currentPageUrl.toString();
 	}
-
-	@Override
-	public boolean shallowScrape(ScrapeTarget target) {
-		shallowScrapeResult = new ArrayList<String>();
-		
-		Elements selection = currentPage.select(target.getSelectString());
-		
-		for(Element elem : selection)
-			shallowScrapeResult.add(target.retrieveTarget(elem));
-		
-		return !shallowScrapeResult.isEmpty();
-	}
 	
 	@Override
 	public void clearScrapeResult() {
 		scrapeResult.clear();
-	}
-	
-	private void executeActions(List<Action> actions){
-		for(Action action : actions)
-			action.execute();
 	}
 }
