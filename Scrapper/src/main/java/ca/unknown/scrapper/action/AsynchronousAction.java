@@ -1,12 +1,13 @@
 package ca.unknown.scrapper.action;
 
 import ca.unknown.scrapper.HtmlScrapper;
+import ca.unknown.scrapper.scraperRunnable.ScraperRunnable;
 
 public class AsynchronousAction<T> extends AbstractAction{
 
-	Runnable runnable;
+	ScraperRunnable runnable;
 	
-	public AsynchronousAction(HtmlScrapper scrapper, Runnable runnable) {
+	public AsynchronousAction(HtmlScrapper scrapper, ScraperRunnable runnable) {
 		super(scrapper);
 		
 		this.runnable = runnable;		
@@ -14,8 +15,9 @@ public class AsynchronousAction<T> extends AbstractAction{
 
 	@Override
 	public Action execute(){
+		runnable.setScrapeResult(scraper.getScrapeResult());
+		Thread t = new Thread(runnable);
 		try{
-			Thread t = new Thread(runnable);
 			t.start();
 		}catch(Exception e){
 			e.printStackTrace();
