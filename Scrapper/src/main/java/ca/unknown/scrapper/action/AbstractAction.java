@@ -4,19 +4,19 @@ import ca.unknown.scrapper.HtmlScrapper;
 
 public class AbstractAction implements Action {
 
-    protected HtmlScrapper scrapper;
+    protected HtmlScrapper scraper;
 
     protected Action successCallback;
 
     protected Action failureCallback;
 
     public AbstractAction(HtmlScrapper scrapper) {
-        this.scrapper = scrapper;
+        this.scraper = scrapper;
     }
 
     @Override
     public Action execute() {
-        return new ExitAction(scrapper);
+        return new ExitAction(scraper);
     }
 
     @Override
