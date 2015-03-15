@@ -1,6 +1,9 @@
 package ca.unknown.replaydecoder.packets;
 
-public interface Packet {
+public abstract class Packet {
 
-    void toReadableFormat();
+    protected String type;
+    protected int timestamp;
+
+    public abstract void toReadableFormat();
 }
