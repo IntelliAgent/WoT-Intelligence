@@ -1,8 +1,8 @@
 package ca.unknown.replaydecoder.packets;
 
-public class Packet00 implements Packet {
+public class Packet00 extends Packet {
     @Override
-    public void parse() {
+    public void toReadableFormat() {
 
     }
 }
