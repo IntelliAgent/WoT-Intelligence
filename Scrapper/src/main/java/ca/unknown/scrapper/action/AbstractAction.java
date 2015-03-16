@@ -10,8 +10,8 @@ public class AbstractAction implements Action {
 
     protected Action failureCallback;
 
-    public AbstractAction(HtmlScrapper scrapper) {
-        this.scraper = scrapper;
+    public AbstractAction(HtmlScrapper scraper) {
+        this.scraper = scraper;
     }
 
     @Override
