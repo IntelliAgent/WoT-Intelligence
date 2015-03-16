@@ -14,12 +14,12 @@ import java.util.List;
  *         page of fetch a target, which is ultimatly html or an interfacing structure
  *         for html. Specifically, a scrapper may not download any content from a page.
  */
-public interface HtmlScrapper {	
-	public void followLink(FollowLinkAction followLinkAction);
-	
+public interface HtmlScrapper {		
 	public void changePage(String url);
 	
 	public String getCurrentPageUrl();
+	
+	public String getBaseUri();
 		
 	public boolean scrape(ScrapeTarget target);
 			

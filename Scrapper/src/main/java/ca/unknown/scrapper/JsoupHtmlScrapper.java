@@ -1,7 +1,7 @@
 package ca.unknown.scrapper;
 
-import ca.unknown.scrapper.action.FollowLinkAction;
 import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -47,11 +47,6 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	}
 
 	@Override
-	public void followLink(FollowLinkAction followLinkAction) {
-		followLinkAction.execute();		
-	}
-
-	@Override
 	public void changePage(String url) {
 		try {
 			currentPageUrl = new URI(url);
@@ -91,5 +86,10 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
 	@Override
 	public void clearScrapeResult() {
 		scrapeResult.clear();
+	}
+
+	@Override
+	public String getBaseUri() {
+		return currentPage.baseUri();
 	}
 }
