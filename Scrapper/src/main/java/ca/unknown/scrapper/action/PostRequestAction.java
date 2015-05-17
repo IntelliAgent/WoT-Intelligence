@@ -2,19 +2,27 @@ package ca.unknown.scrapper.action;
 
 import ca.unknown.scrapper.HtmlScrapper;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class PostRequestAction extends AbstractAction {
 
-    Map<String, String> postParam;
+    private Map<String, String> postParam;
 
-    public PostRequestAction(HtmlScrapper scrapper, Map<String, String> postParam) {
-        super(scrapper);
-        this.postParam = postParam;
-    }
-    
+    private String url;
+        
     public PostRequestAction(HtmlScrapper scrapper, Map<String, String> postParam, String url){
       super(scrapper);
       this.postParam = postParam;
+    }
+    
+    @Override
+    public Action execute(){
+      try{
+        scraper.postRequest(url, postParam);
+      }catch(IOException e){
+        return failureCallback;
+      }
+      return successCallback;
     }
 }

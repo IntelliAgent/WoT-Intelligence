@@ -53,7 +53,6 @@ public class JsoupHtmlScrapper implements HtmlScrapper {
   public void changePage(String url) {
     updateCurrentPageURL(url);
 
-    System.out.println("Going to " + currentPageUrl);
     try {
       currentPage = Jsoup.parse(currentPageUrl.toURL(), TIMEOUT);
     } catch (MalformedURLException e) {
