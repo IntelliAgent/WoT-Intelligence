@@ -1,22 +1,18 @@
 package ca.unknown.replaydecoder.decryption;
 
-import javax.crypto.BadPaddingException;
+import ca.unknown.replaydecoder.decryption.exception.CannotDecryptReplayException;
+
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class ReplayDecrypter {
 
     private static final int BLOCK_SIZE = 8;
     private static final byte[] KEY =
-        {(byte) 0xDE, (byte) 0x72, (byte) 0xBE, (byte) 0xA0, (byte) 0xDE, (byte) 0x04, (byte) 0xBE, (byte) 0xB1,
-            (byte) 0xDE, (byte) 0xFE, (byte) 0xBE, (byte) 0xEF, (byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF};
+            {(byte) 0xDE, (byte) 0x72, (byte) 0xBE, (byte) 0xA0, (byte) 0xDE, (byte) 0x04, (byte) 0xBE, (byte) 0xB1,
+                    (byte) 0xDE, (byte) 0xFE, (byte) 0xBE, (byte) 0xEF, (byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF};
 
     private final byte[] bytes;
 
@@ -53,18 +49,11 @@ public class ReplayDecrypter {
             replayDecrypted.write(previous, 0, 8);
             replayDecrypted.close();
 
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IOException | IllegalBlockSizeException | InvalidKeyException e) {
-            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            throw new CannotDecryptReplayException("Cannot decrypt replay exception", e);
         }
     }
 
-    /**
-     * Computes array-wise XOR.
-     *
-     * @param a the first array.
-     * @param b the second array.
-     * @return the XOR-ed array.
-     */
     public static byte[] xorArrays(byte[] a, byte[] b) {
         byte[] xor = new byte[a.length];
 
@@ -75,9 +64,7 @@ public class ReplayDecrypter {
         return xor;
     }
 
-    public void decrypt(FileOutputStream replayDecrypted)
-        throws NoSuchPaddingException, NoSuchAlgorithmException, IOException, BadPaddingException,
-        IllegalBlockSizeException, InvalidKeyException {
+    public void decrypt(FileOutputStream replayDecrypted) {
         decryptBlowfish(bytes, replayDecrypted);
     }
 

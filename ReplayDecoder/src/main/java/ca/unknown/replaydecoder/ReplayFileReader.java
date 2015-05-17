@@ -1,5 +1,6 @@
 package ca.unknown.replaydecoder;
 
+import ca.unknown.replaydecoder.exception.*;
 import ca.unknown.replaydecoder.swapper.ByteSwapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,7 +8,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -25,12 +25,6 @@ public class ReplayFileReader {
 
     public ReplayFileReader(File file) {
         this.file = file;
-        try {
-            randomAccessFile = new RandomAccessFile(file, "r");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public int getNumberOfBlocks() {
@@ -41,6 +35,7 @@ public class ReplayFileReader {
         int startPointer = 8;
         int blockNumber = 1;
         try {
+            randomAccessFile = new RandomAccessFile(file, "r");
             randomAccessFile.seek(4);
 
             numberOfBlocks = ByteSwapper.swap(randomAccessFile.readInt());
@@ -58,8 +53,9 @@ public class ReplayFileReader {
                 tmpNumberOfBlocks--;
                 blockNumber++;
             }
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CannotInitializeReplayDecoderException("Cannot initialize replay decoder", e);
         }
     }
 
@@ -69,9 +65,8 @@ public class ReplayFileReader {
             int magicNumberReadFromFile = randomAccessFile.readInt();
             return String.format("%04X", magicNumberReadFromFile).equals(MAGIC_NUMBER);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CannotValidateMagicNumber("Cannot validate magic number", e);
         }
-        return false;
     }
 
     public String getFirstBlock() {
@@ -80,7 +75,7 @@ public class ReplayFileReader {
             randomAccessFile.seek(getBlockPosition(1));
             randomAccessFile.read(json, 0, getBlockSize(1));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CannotReadFirstBlockException("Cannot read first block", e);
         }
         return getReadableJsonData(json);
     }
@@ -93,7 +88,7 @@ public class ReplayFileReader {
             randomAccessFile.seek(getBlockPosition(2));
             randomAccessFile.read(json, 0, blockSize);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CannotReadSecondBlockException("Cannot read second block", e);
         }
         return getReadableJsonData(json);
     }
@@ -103,10 +98,9 @@ public class ReplayFileReader {
         try {
             randomAccessFile.seek(positionCryptedPart);
             return ByteSwapper.swap(randomAccessFile.readInt());
-        } catch (IOException ignored) {
-
+        } catch (IOException e) {
+            throw new CannotGetCryptedPartSizeException("Cannot get crypted part size", e);
         }
-        return 0;
     }
 
     public byte[] getCryptedBlock() {
@@ -117,8 +111,8 @@ public class ReplayFileReader {
         try {
             randomAccessFile.seek(positionCryptedPart);
             randomAccessFile.read(crypted, 0, cryptedSize);
-        } catch (IOException ignored) {
-
+        } catch (IOException e) {
+            throw new CannotGetCryptedBlockException("Cannot get crypted block", e);
         }
         return crypted;
     }

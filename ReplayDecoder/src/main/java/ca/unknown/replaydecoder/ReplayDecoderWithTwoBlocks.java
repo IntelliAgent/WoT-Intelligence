@@ -6,15 +6,13 @@ import java.io.IOException;
 
 public class ReplayDecoderWithTwoBlocks extends ReplayDecoder {
 
-
-
     public ReplayDecoderWithTwoBlocks(ReplayFileReader fileReader) {
         super(fileReader);
     }
 
     public void decode() {
         String replayExtracted =
-            replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
+                replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
 
         String JSON = "C:\\replays\\" + replayExtracted + ".json";
         File file = new File(JSON);
