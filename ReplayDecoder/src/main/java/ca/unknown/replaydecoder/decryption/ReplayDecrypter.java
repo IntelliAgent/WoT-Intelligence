@@ -33,7 +33,6 @@ public class ReplayDecrypter {
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
             byte[] paddedToDecrypted = Arrays.copyOfRange(to_decrypt, 0, to_decrypt.length + padding_size);
 
-
             byte[] decrypted = cipher.update(to_decrypt, 0, 8);
             byte[] previous = decrypted;
 
@@ -45,18 +44,18 @@ public class ReplayDecrypter {
                 previous = xorArrays(previous, decrypt);
                 replayDecrypted.write(previous, 0, 8);
             }
+
             byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, paddedToDecrypted.length - 8, paddedToDecrypted.length);
             byte[] decrypt = cipher.doFinal(toDecrypt);
+
             previous = xorArrays(previous, decrypt);
+
             replayDecrypted.write(previous, 0, 8);
             replayDecrypted.close();
 
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IOException | IllegalBlockSizeException | InvalidKeyException e) {
             System.err.println(e.getMessage());
         }
-
-
-
     }
 
     /**

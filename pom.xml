@@ -7,10 +7,10 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>ReplayParser</module>
-        <module>ReplayAnalyzer</module>
-        <module>ReplayDecoder</module>
-    	<module>Scrapper</module>
+        <module>replayparser</module>
+        <module>replayanalyzer</module>
+        <module>replaydecoder</module>
+    	<module>scrapper</module>
   </modules>
 
     <dependencies>

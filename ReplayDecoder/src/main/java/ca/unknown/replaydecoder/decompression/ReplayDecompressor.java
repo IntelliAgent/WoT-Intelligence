@@ -17,9 +17,7 @@ public class ReplayDecompressor {
         try {
             return ZlibCompression.decompressData(cryptedFile);
         } catch (IOException | DataFormatException ignored) {
-
-
+            return new byte[0];
         }
-        return null;
     }
 }

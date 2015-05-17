@@ -2,7 +2,7 @@ package ca.unknown.scrapper.action;
 
 import ca.unknown.scrapper.HtmlScrapper;
 
-public class AbstractAction implements Action {
+public abstract class AbstractAction implements Action {
 
     protected HtmlScrapper scraper;
 

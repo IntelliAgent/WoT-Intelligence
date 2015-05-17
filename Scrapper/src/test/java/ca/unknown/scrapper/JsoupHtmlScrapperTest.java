@@ -1,25 +1,15 @@
 package ca.unknown.scrapper;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-
-import ca.unknown.scrapper.action.Action;
-import ca.unknown.scrapper.action.AsynchronousAction;
-import ca.unknown.scrapper.action.ExitAction;
-import ca.unknown.scrapper.action.FollowLinkAction;
-import ca.unknown.scrapper.action.GetRedirectResponseAction;
-import ca.unknown.scrapper.action.GetResponseHeaderAction;
-import ca.unknown.scrapper.action.ScrapeAction;
+import ca.unknown.scrapper.action.*;
 import ca.unknown.scrapper.invoker.ConcreteInvoker;
 import ca.unknown.scrapper.invoker.Invoker;
 import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class JsoupHtmlScrapperTest {
 	

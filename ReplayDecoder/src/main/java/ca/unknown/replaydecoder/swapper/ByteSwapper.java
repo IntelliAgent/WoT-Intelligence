@@ -43,8 +43,6 @@ public class ByteSwapper {
         return (short) (b1 << 8 | b2 << 0);
     }
 
-
-
     /**
      * Byte swap a single int value.
      *
@@ -59,8 +57,6 @@ public class ByteSwapper {
 
         return b1 << 24 | b2 << 16 | b3 << 8 | b4 << 0;
     }
-
-
 
     /**
      * Byte swap a single long value.
@@ -82,8 +78,6 @@ public class ByteSwapper {
             b5 << 24 | b6 << 16 | b7 << 8 | b8 << 0;
     }
 
-
-
     /**
      * Byte swap a single float value.
      *
@@ -95,8 +89,6 @@ public class ByteSwapper {
         intValue = swap(intValue);
         return Float.intBitsToFloat(intValue);
     }
-
-
 
     /**
      * Byte swap a single double value.
@@ -110,8 +102,6 @@ public class ByteSwapper {
         return Double.longBitsToDouble(longValue);
     }
 
-
-
     /**
      * Byte swap an array of shorts. The result of the swapping
      * is put back into the specified array.
@@ -122,8 +112,6 @@ public class ByteSwapper {
         for (int i = 0; i < array.length; i++)
             array[i] = swap(array[i]);
     }
-
-
 
     /**
      * Byte swap an array of ints. The result of the swapping
@@ -136,8 +124,6 @@ public class ByteSwapper {
             array[i] = swap(array[i]);
     }
 
-
-
     /**
      * Byte swap an array of longs. The result of the swapping
      * is put back into the specified array.
@@ -149,8 +135,6 @@ public class ByteSwapper {
             array[i] = swap(array[i]);
     }
 
-
-
     /**
      * Byte swap an array of floats. The result of the swapping
      * is put back into the specified array.
@@ -161,8 +145,6 @@ public class ByteSwapper {
         for (int i = 0; i < array.length; i++)
             array[i] = swap(array[i]);
     }
-
-
 
     /**
      * Byte swap an array of doubles. The result of the swapping

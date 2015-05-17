@@ -29,12 +29,11 @@ public class Main {
 
                 if (numberOfJsonBlock == 1) {
                     ReplayDecoderWithOneBlock replayDecoderWithOneBlock =
-                        new ReplayDecoderWithOneBlock(replayFileReader);
+                            new ReplayDecoderWithOneBlock(replayFileReader);
                     replayDecoderWithOneBlock.decode();
-                }
-                if (numberOfJsonBlock == 2) {
+                } else if (numberOfJsonBlock == 2) {
                     ReplayDecoderWithTwoBlocks replayDecoderWithTwoBlocks =
-                        new ReplayDecoderWithTwoBlocks(replayFileReader);
+                            new ReplayDecoderWithTwoBlocks(replayFileReader);
                     replayDecoderWithTwoBlocks.decode();
                 }
 
