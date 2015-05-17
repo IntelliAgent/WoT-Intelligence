@@ -14,6 +14,7 @@ public class PostRequestAction extends AbstractAction {
     public PostRequestAction(HtmlScrapper scrapper, Map<String, String> postParam, String url){
       super(scrapper);
       this.postParam = postParam;
+      this.url = url;
     }
     
     @Override

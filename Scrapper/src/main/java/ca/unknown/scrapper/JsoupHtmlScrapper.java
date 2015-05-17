@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class JsoupHtmlScrapper implements HtmlScrapper {
 
-  private static final int TIMEOUT = 50000;
+  private static final int TIMEOUT = 500000;
 
   private URI currentPageUrl;
 

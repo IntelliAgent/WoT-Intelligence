@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element;
  *         A target defines a type of element to fetch on a given page
  */
 public interface ScrapeTarget {
-    public String getSelectString();
+    String getSelectString();
 
-    public String retrieveTarget(Element elem);
+    String retrieveTarget(Element elem);
 }

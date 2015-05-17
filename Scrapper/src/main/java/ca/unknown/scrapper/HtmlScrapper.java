@@ -16,9 +16,9 @@ import java.util.Map;
  *         for html. Specifically, a scrapper may not download any content from a page.
  */
 public interface HtmlScrapper {		
-	public void changePage(String url);
+	void changePage(String url);
 	
-	public void postRequest(String url, Map<String, String> postParam) throws IOException;
+	void postRequest(String url, Map<String, String> postParam) throws IOException;
 	
 	String getCurrentPageUrl();
 	
