@@ -1,9 +1,10 @@
 package ca.unknown.scrapper;
 
-import ca.unknown.scrapper.action.FollowLinkAction;
 import ca.unknown.scrapper.scrapeTarget.ScrapeTarget;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author TheCoconutChef
@@ -17,13 +18,15 @@ import java.util.List;
 public interface HtmlScrapper {		
 	public void changePage(String url);
 	
-	public String getCurrentPageUrl();
+	public void postRequest(String url, Map<String, String> postParam) throws IOException;
 	
-	public String getBaseUri();
+	String getCurrentPageUrl();
+	
+	String getBaseUri();
 		
-	public boolean scrape(ScrapeTarget target);
+	boolean scrape(ScrapeTarget target);
 			
-	public List<String> getScrapeResult();
+	List<String> getScrapeResult();
 	
-	public void clearScrapeResult();
+	void clearScrapeResult();
 }
