@@ -13,7 +13,7 @@ import java.util.zip.Inflater;
 public class ZlibCompression {
 
     public static byte[] decompressData(FileInputStream fileInputStream) throws IOException, DataFormatException {
-        // Decompress the bytes
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
 
