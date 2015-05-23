@@ -1,7 +1,10 @@
 package ca.unknown.replaydecoder;
 
+import ca.unknown.replayparser.ReplayParser;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,10 +47,11 @@ public class Main {
                 int numberOfJsonBlock = replayFileReader.getNumberOfBlocks();
 
                 ReplayDecoder replayDecoder = getReplayDecoder(numberOfJsonBlock, replayFileReader, outputDirectory);
-
+                ByteBuffer decodedReplay = null;
                 if (replayDecoder != null) {
-                    replayDecoder.decode();
+                    decodedReplay = replayDecoder.decode();
                 }
+                ReplayParser replayParser = new ReplayParser(decodedReplay);
             }
         }
     }

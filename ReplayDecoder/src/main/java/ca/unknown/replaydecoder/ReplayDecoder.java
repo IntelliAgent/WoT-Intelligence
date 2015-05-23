@@ -6,6 +6,7 @@ import ca.unknown.replaydecoder.exception.CannotDecodeReplayException;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,7 +22,7 @@ public abstract class ReplayDecoder {
     }
 
 
-    protected void decode() {
+    protected ByteBuffer decode() {
         byte[] compressedCrypted = replayFileReader.getCryptedBlock();
         String replayExtracted =
                 replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
@@ -50,6 +51,8 @@ public abstract class ReplayDecoder {
             decompressFile.write(decompressedData);
             fis.close();
             Files.delete(Paths.get(decryptedFile));
+
+            return ByteBuffer.wrap(decompressedData);
 
         } catch (Exception e) {
             throw new CannotDecodeReplayException("Cannot decode replay", e);

@@ -1,4 +1,4 @@
-package ca.unknown.replaydecoder.packets;
+package ca.unknown.replayparser.packets;
 
 public abstract class Packet {
 
