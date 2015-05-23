@@ -7,14 +7,17 @@ import ca.unknown.replaydecoder.exception.CannotDecodeReplayException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public abstract class ReplayDecoder {
 
     protected final ReplayFileReader replayFileReader;
+    private final Path defaultDirectory;
 
-    public ReplayDecoder(ReplayFileReader replayFileReader) {
+    public ReplayDecoder(ReplayFileReader replayFileReader, Path outputDirectory) {
         this.replayFileReader = replayFileReader;
+        this.defaultDirectory = outputDirectory;
     }
 
 
@@ -23,10 +26,10 @@ public abstract class ReplayDecoder {
         String replayExtracted =
                 replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
 
-        String decompressed = "C:\\replays\\" + replayExtracted + " - Decompressed.dat";
+        String decompressed = defaultDirectory.toString() + replayExtracted + " - Decompressed.dat";
         ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
 
-        String decryptedFile = "C:\\replays\\" + replayExtracted + " - Decrypted.dat";
+        String decryptedFile = defaultDirectory.toString() + replayExtracted + " - Decrypted.dat";
         FileOutputStream decompressFile = null;
         FileInputStream fis = null;
         FileOutputStream fos = null;

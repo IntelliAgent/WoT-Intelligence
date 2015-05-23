@@ -3,11 +3,12 @@ package ca.unknown.replaydecoder;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class ReplayDecoderWithTwoBlocks extends ReplayDecoder {
 
-    public ReplayDecoderWithTwoBlocks(ReplayFileReader fileReader) {
-        super(fileReader);
+    public ReplayDecoderWithTwoBlocks(ReplayFileReader fileReader, Path outputDirectory) {
+        super(fileReader, outputDirectory);
     }
 
     public void decode() {
