@@ -42,7 +42,7 @@ public class ReplayFileReader {
             int tmpNumberOfBlocks = numberOfBlocks;
             System.out.println("Number of blocks : " + numberOfBlocks);
             if (numberOfBlocks == 0) {
-                return;
+                throw new InvalidReplayFormatException("Number of block is 0");
             }
 
             while (tmpNumberOfBlocks >= 1) {
@@ -65,7 +65,7 @@ public class ReplayFileReader {
             int magicNumberReadFromFile = randomAccessFile.readInt();
             return String.format("%04X", magicNumberReadFromFile).equals(MAGIC_NUMBER);
         } catch (IOException e) {
-            throw new CannotValidateMagicNumber("Cannot validate magic number", e);
+            throw new CannotValidateMagicNumberException("Cannot validate magic number", e);
         }
     }
 
