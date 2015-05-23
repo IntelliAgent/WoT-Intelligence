@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 public abstract class ReplayDecoder {
 
     protected final ReplayFileReader replayFileReader;
-    private final Path defaultDirectory;
+    protected final Path defaultDirectory;
 
     public ReplayDecoder(ReplayFileReader replayFileReader, Path outputDirectory) {
         this.replayFileReader = replayFileReader;

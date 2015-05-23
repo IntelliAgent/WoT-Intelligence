@@ -16,7 +16,7 @@ public class ReplayDecoderWithOneBlock extends ReplayDecoder {
         String replayExtracted =
                 replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
 
-        String JSON = "C:\\replays\\" + replayExtracted + ".json";
+        String JSON = defaultDirectory.toString() + replayExtracted + ".json";
         File file = new File(JSON);
         try {
             FileOutputStream jsonData = new FileOutputStream(file);
