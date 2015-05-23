@@ -29,16 +29,16 @@ public class ReplayDecrypter {
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
             byte[] paddedToDecrypted = Arrays.copyOfRange(to_decrypt, 0, to_decrypt.length + padding_size);
 
-            byte[] decrypted = cipher.update(to_decrypt, 0, 8);
+            byte[] decrypted = cipher.update(to_decrypt, 0, BLOCK_SIZE);
             byte[] previous = decrypted;
 
             replayDecrypted.write(decrypted);
 
-            for (int i = 8; i < paddedToDecrypted.length - 8; i += BLOCK_SIZE) {
+            for (int i = 8; i < paddedToDecrypted.length - BLOCK_SIZE; i += BLOCK_SIZE) {
                 byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, i, i + BLOCK_SIZE);
                 byte[] decrypt = cipher.update(toDecrypt);
                 previous = xorArrays(previous, decrypt);
-                replayDecrypted.write(previous, 0, 8);
+                replayDecrypted.write(previous, 0, BLOCK_SIZE);
             }
 
             byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, paddedToDecrypted.length - 8, paddedToDecrypted.length);
@@ -46,7 +46,7 @@ public class ReplayDecrypter {
 
             previous = xorArrays(previous, decrypt);
 
-            replayDecrypted.write(previous, 0, 8);
+            replayDecrypted.write(previous, 0, BLOCK_SIZE);
             replayDecrypted.close();
 
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class ReplayDecrypter {
         }
     }
 
-    public static byte[] xorArrays(byte[] a, byte[] b) {
+    private static byte[] xorArrays(byte[] a, byte[] b) {
         byte[] xor = new byte[a.length];
 
         for (int i = 0; i < a.length; i++) {
