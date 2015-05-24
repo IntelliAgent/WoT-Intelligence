@@ -3,15 +3,13 @@ package ca.unknown.replayparser;
 import ca.unknown.replayparser.packets.Packet;
 import ca.unknown.replayparser.packets.PacketFactory;
 import ca.unknown.replayparser.packets.PacketType;
-import ca.unkown.replaydecoder.swapper.ByteSwapper;
+import ca.unknown.common.swapper.ByteSwapper;
 
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ReplayParser {
-    private static final int SIZE_OF_INT = 4;
-
     private final PacketFactory packetFactory;
 
     private ByteBuffer replayPackets;

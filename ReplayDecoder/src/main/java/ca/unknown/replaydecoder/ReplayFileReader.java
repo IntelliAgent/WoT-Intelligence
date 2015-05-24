@@ -1,7 +1,7 @@
 package ca.unknown.replaydecoder;
 
 import ca.unknown.replaydecoder.exception.*;
-import ca.unknown.replaydecoder.swapper.ByteSwapper;
+import ca.unknown.common.swapper.ByteSwapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
