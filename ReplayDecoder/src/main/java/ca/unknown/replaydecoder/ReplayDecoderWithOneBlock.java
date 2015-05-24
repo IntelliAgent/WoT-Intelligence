@@ -3,17 +3,19 @@ package ca.unknown.replaydecoder;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.file.Path;
 
 public class ReplayDecoderWithOneBlock extends ReplayDecoder {
 
 
 
-    public ReplayDecoderWithOneBlock(ReplayFileReader fileReader) {
-        super(fileReader);
+    public ReplayDecoderWithOneBlock(ReplayFileReader fileReader, Path outputDirectory) {
+        super(fileReader, outputDirectory);
     }
 
     @Override
-    public void decode() {
+    public ByteBuffer decode() {
         String replayExtracted =
             replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
 
@@ -25,6 +27,6 @@ public class ReplayDecoderWithOneBlock extends ReplayDecoder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        super.decode();
+        return super.decode();
     }
 }
