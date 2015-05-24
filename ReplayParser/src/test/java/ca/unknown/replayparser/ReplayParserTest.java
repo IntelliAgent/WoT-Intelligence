@@ -1,12 +1,19 @@
 package ca.unknown.replayparser;
 
+import ca.unknown.replayparser.packets.Packet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+import static junit.framework.Assert.assertFalse;
 
 public class ReplayParserTest {
 
@@ -14,9 +21,8 @@ public class ReplayParserTest {
     private ReplayParser replayParser;
 
     @BeforeClass
-    public void setUpClass(){
-        //buffer = getReplayRawData();
-        buffer = ByteBuffer.wrap(new byte[36]);
+    public static void setUpClass() {
+        buffer = getReplayRawData();
     }
 
     @Before
@@ -25,18 +31,26 @@ public class ReplayParserTest {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         buffer.reset();
     }
 
     @Test
     public void test() {
         replayParser.parsePackets();
+        List<Packet> packets = replayParser.getPackets();
+        assertFalse(packets.isEmpty());
     }
 
-    private ByteBuffer getReplayRawData(){
-        File f = new File(System.getProperty("user.dir") + "/src/test/resources/decompressedData.dat");
-        
-        return null;
+    private static ByteBuffer getReplayRawData() {
+        byte[] data = null;
+        try {
+            Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/ca.unknown.replayparser/decompressedData.dat");
+            data = Files.readAllBytes(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return ByteBuffer.wrap(data);
     }
 }

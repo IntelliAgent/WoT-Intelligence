@@ -1,6 +1,8 @@
 package ca.unknown.replaydecoder;
 
 import ca.unknown.replayparser.ReplayParser;
+import ca.unknown.replayparser.reader.BasicPacketReader;
+import ca.unknown.replayparser.reader.PacketReader;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +53,10 @@ public class Main {
                 if (replayDecoder != null) {
                     decodedReplay = replayDecoder.decode();
                 }
-                ReplayParser replayParser = new ReplayParser(decodedReplay);
+
+                PacketReader packetReader = new BasicPacketReader(decodedReplay);
+                ReplayParser replayParser = new ReplayParser(packetReader);
+                replayParser.parsePackets();
             }
         }
     }

@@ -1,34 +1,40 @@
-package ca.unknown.replayparser;
+package ca.unknown.replayparser.reader;
 
 import ca.unknown.common.swapper.ByteSwapper;
+import ca.unknown.replayparser.reader.PacketReader;
 
 import java.nio.ByteBuffer;
 
-public class PacketReader {
+public class BasicPacketReader implements PacketReader {
 
     private ByteBuffer replayData;
 
-    public PacketReader(ByteBuffer replayData){
+    public BasicPacketReader(ByteBuffer replayData){
         this.replayData = replayData;
     }
 
-    public int getType() {
+    @Override
+    public int readType() {
         return ByteSwapper.swap(replayData.getInt());
     }
 
-    public int getLength() {
+    @Override
+    public int readLength() {
         return ByteSwapper.swap(replayData.getInt());
     }
 
-    public float getClock() {
+    @Override
+    public float readClock() {
         return replayData.getFloat();
     }
 
+    @Override
     public boolean hasRemaining(){
         return replayData.hasRemaining();
     }
 
-    public ByteBuffer getRawPacketData(int length) {
+    @Override
+    public ByteBuffer readPayload(int length) {
         return replayData.get(new byte[length]);
     }
 }

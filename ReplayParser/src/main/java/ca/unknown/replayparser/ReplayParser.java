@@ -3,7 +3,7 @@ package ca.unknown.replayparser;
 import ca.unknown.replayparser.packets.Packet;
 import ca.unknown.replayparser.packets.PacketFactory;
 import ca.unknown.replayparser.packets.PacketType;
-import ca.unknown.common.swapper.ByteSwapper;
+import ca.unknown.replayparser.reader.PacketReader;
 
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
@@ -31,11 +31,11 @@ public class ReplayParser {
 
         while (packetReader.hasRemaining()) {
 
-            type = packetReader.getType();
-            length = packetReader.getLength();
-            clock = packetReader.getClock();
+            type = packetReader.readType();
+            length = packetReader.readLength();
+            clock = packetReader.readClock();
 
-            packetRawData = packetReader.getRawPacketData(length);
+            packetRawData = packetReader.readPayload(length);
 
             packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
         }
