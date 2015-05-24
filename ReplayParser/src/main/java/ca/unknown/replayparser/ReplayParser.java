@@ -3,7 +3,7 @@ package ca.unknown.replayparser;
 import ca.unknown.replayparser.packets.Packet;
 import ca.unknown.replayparser.packets.PacketFactory;
 import ca.unknown.replayparser.packets.PacketType;
-import ca.unknown.common.swapper.ByteSwapper;
+import ca.unknown.replayparser.reader.PacketReader;
 
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
@@ -12,12 +12,12 @@ import java.util.List;
 public class ReplayParser {
     private final PacketFactory packetFactory;
 
-    private ByteBuffer replayPackets;
-
     private List<Packet> packets;
 
-    public ReplayParser(ByteBuffer decodedReplay) {
-        replayPackets = decodedReplay;
+    private PacketReader packetReader;
+
+    public ReplayParser(PacketReader packetReader) {
+        this.packetReader = packetReader;
         packets = new LinkedList<>();
         packetFactory = new PacketFactory();
     }
@@ -29,37 +29,22 @@ public class ReplayParser {
 
         ByteBuffer packetRawData;
 
-        while (replayPackets.hasRemaining()) {
+        while (packetReader.hasRemaining()) {
 
-            type = getType();
-            length = getLength();
-            clock = getClock();
+            length = packetReader.readLength();
+            type = packetReader.readType();
+            clock = packetReader.readClock();
 
-            packetRawData = getRawPacketData(length);
+            packetRawData = packetReader.readPayload(length);
 
-            packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
+            if (PacketType.fromInt(type) != null && length > 0 && packetRawData != null)
+                packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
         }
+
+        packets.forEach(System.out::println);
     }
 
     public List<Packet> getPackets() {
         return packets;
     }
-
-    private int getType() {
-        return ByteSwapper.swap(replayPackets.getInt());
-    }
-
-    private int getLength() {
-        return ByteSwapper.swap(replayPackets.getInt());
-    }
-
-    private float getClock() {
-        return replayPackets.getFloat();
-    }
-
-    private ByteBuffer getRawPacketData(int length) {
-        return replayPackets.get(new byte[length]);
-    }
-
-
 }

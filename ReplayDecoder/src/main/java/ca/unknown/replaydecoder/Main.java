@@ -1,10 +1,13 @@
 package ca.unknown.replaydecoder;
 
 import ca.unknown.replayparser.ReplayParser;
+import ca.unknown.replayparser.reader.BasicPacketReader;
+import ca.unknown.replayparser.reader.PacketReader;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,8 +53,12 @@ public class Main {
                 ByteBuffer decodedReplay = null;
                 if (replayDecoder != null) {
                     decodedReplay = replayDecoder.decode();
+                    decodedReplay.order(ByteOrder.LITTLE_ENDIAN);
                 }
-                ReplayParser replayParser = new ReplayParser(decodedReplay);
+
+                PacketReader packetReader = new BasicPacketReader(decodedReplay);
+                ReplayParser replayParser = new ReplayParser(packetReader);
+                replayParser.parsePackets();
             }
         }
     }
