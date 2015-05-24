@@ -6,7 +6,8 @@ public enum SubPacketType {
     UPDATE_VEHICLE_FRAG_COUNT(0x05),
     VEHICLE_TRACKED(0x17),
     HEALTH_UPDATE(0x03),
-    DESTROYED_TRACK(0x07);
+    DESTROYED_TRACK(0x07),
+    UNKNOWN(0x00);
 
     private int value;
 
@@ -24,7 +25,8 @@ public enum SubPacketType {
                 return UPDATE_VEHICLE_FRAG_COUNT;
             case 0x17:
                 return VEHICLE_TRACKED;
+            default:
+                return UNKNOWN;
         }
-        return null;
     }
 }

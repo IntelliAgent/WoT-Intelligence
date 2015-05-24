@@ -77,7 +77,8 @@ public class BasicPacketReaderTest {
             packetReader.readPayload(length.get(length.size() - 1));
         }
 
-assertEquals(type.size(), length.size());
+        assertEquals(type.size(), length.size());
+
         assertTrue(!type.isEmpty());
     }
 }
