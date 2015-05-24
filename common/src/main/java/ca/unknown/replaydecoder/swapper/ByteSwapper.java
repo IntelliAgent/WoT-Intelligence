@@ -1,4 +1,4 @@
-package ca.unkown.replaydecoder.swapper;
+package ca.unknown.replaydecoder.swapper;
 /*
  * (C) 2004 - Geotechnical Software Services
  * 
