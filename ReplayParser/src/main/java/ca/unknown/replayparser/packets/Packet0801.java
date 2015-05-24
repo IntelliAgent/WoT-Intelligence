@@ -2,8 +2,9 @@ package ca.unknown.replayparser.packets;
 
 import java.nio.ByteBuffer;
 
-public class Packet00 extends Packet {
-    public Packet00(PacketType type, int length, float clock, ByteBuffer byteBuffer) {
+public class Packet0801 extends Packet {
+
+    public Packet0801(PacketType type, int length, float clock, ByteBuffer byteBuffer) {
         super(type, length, clock, byteBuffer);
     }
 
