@@ -1,12 +1,13 @@
 package ca.unknown.replayparser;
 
+import ca.unknown.replaydecoder.swapper.ByteSwapper;
 import ca.unknown.replayparser.packets.Packet;
 import ca.unknown.replayparser.packets.PacketFactory;
-import ca.unknown.replaydecoder.swapper.ByteSwapper;
+import ca.unknown.replayparser.packets.PacketType;
 
 import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReplayParser {
     private static final int MIN_PACKET_SIZE = 12;
@@ -26,20 +27,20 @@ public class ReplayParser {
     }
 
     public void parsePackets() {
-        int     type;
-        int     length;
-        float   clock;
+        int type;
+        int length;
+        float clock;
 
         ByteBuffer packetRawData;
 
-        while(replayPackets.hasRemaining()){
-            type    = getType(replayPackets);
-            length  = getLength(replayPackets);
-            clock   = getClock(replayPackets);
+        while (replayPackets.hasRemaining()) {
+            type = getType(replayPackets);
+            length = getLength(replayPackets);
+            clock = getClock(replayPackets);
 
             packetRawData = getRawPacketData(length);
 
-            packets.add(packetFactory.createPacket(type,length,clock,packetRawData));
+            packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
 
             replayPackets.position(replayPackets.position() + length);
         }
@@ -54,14 +55,14 @@ public class ReplayParser {
     }
 
     private float getClock(ByteBuffer buffer) {
-        return replayPackets.getFloat(replayPackets.position() + 2*SIZE_OF_INT);
+        return replayPackets.getFloat(replayPackets.position() + 2 * SIZE_OF_INT);
     }
 
-    private ByteBuffer getRawPacketData(int length){
+    private ByteBuffer getRawPacketData(int length) {
         return replayPackets.get(
-            new byte[length],
-            replayPackets.position(),
-            length);
+                new byte[length],
+                replayPackets.position(),
+                length);
     }
 
 }
