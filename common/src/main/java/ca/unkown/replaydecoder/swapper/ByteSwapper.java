@@ -1,4 +1,4 @@
-package ca.unknown.replaydecoder.swapper;
+package ca.unkown.replaydecoder.swapper;
 /*
  * (C) 2004 - Geotechnical Software Services
  * 
@@ -18,7 +18,6 @@ package ca.unknown.replaydecoder.swapper;
  * MA  02111-1307, USA.
  */
 //package no.geosoft.cc.util;
-
 
 
 /**
@@ -75,7 +74,7 @@ public class ByteSwapper {
         long b8 = (value >> 56) & 0xff;
 
         return b1 << 56 | b2 << 48 | b3 << 40 | b4 << 32 |
-            b5 << 24 | b6 << 16 | b7 << 8 | b8;
+                b5 << 24 | b6 << 16 | b7 << 8 | b8;
     }
 
     /**

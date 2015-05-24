@@ -1,9 +1,9 @@
 package ca.unknown.replayparser;
 
-import ca.unknown.replaydecoder.swapper.ByteSwapper;
 import ca.unknown.replayparser.packets.Packet;
 import ca.unknown.replayparser.packets.PacketFactory;
 import ca.unknown.replayparser.packets.PacketType;
+import ca.unkown.replaydecoder.swapper.ByteSwapper;
 
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
