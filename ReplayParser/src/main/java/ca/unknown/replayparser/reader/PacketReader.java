@@ -12,4 +12,6 @@ public interface PacketReader {
     boolean hasRemaining();
 
     ByteBuffer readPayload(int length);
+
+    ByteBuffer getRawData();
 }

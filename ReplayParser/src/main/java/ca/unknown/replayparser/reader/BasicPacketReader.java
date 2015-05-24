@@ -1,7 +1,6 @@
 package ca.unknown.replayparser.reader;
 
 import ca.unknown.common.swapper.ByteSwapper;
-import ca.unknown.replayparser.reader.PacketReader;
 
 import java.nio.ByteBuffer;
 
@@ -9,8 +8,13 @@ public class BasicPacketReader implements PacketReader {
 
     private ByteBuffer replayData;
 
-    public BasicPacketReader(ByteBuffer replayData){
+    public BasicPacketReader(ByteBuffer replayData) {
         this.replayData = replayData;
+    }
+
+    @Override
+    public ByteBuffer getRawData() {
+        return replayData;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class BasicPacketReader implements PacketReader {
     }
 
     @Override
-    public boolean hasRemaining(){
+    public boolean hasRemaining() {
         return replayData.hasRemaining();
     }
 
