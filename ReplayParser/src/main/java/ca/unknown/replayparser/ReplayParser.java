@@ -12,12 +12,12 @@ import java.util.List;
 public class ReplayParser {
     private final PacketFactory packetFactory;
 
-    private ByteBuffer replayPackets;
-
     private List<Packet> packets;
 
-    public ReplayParser(ByteBuffer decodedReplay) {
-        replayPackets = decodedReplay;
+    private PacketReader packetReader;
+
+    public ReplayParser(PacketReader packetReader) {
+        this.packetReader = packetReader;
         packets = new LinkedList<>();
         packetFactory = new PacketFactory();
     }
@@ -29,13 +29,13 @@ public class ReplayParser {
 
         ByteBuffer packetRawData;
 
-        while (replayPackets.hasRemaining()) {
+        while (packetReader.hasRemaining()) {
 
-            type = getType();
-            length = getLength();
-            clock = getClock();
+            type = packetReader.getType();
+            length = packetReader.getLength();
+            clock = packetReader.getClock();
 
-            packetRawData = getRawPacketData(length);
+            packetRawData = packetReader.getRawPacketData(length);
 
             packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
         }
@@ -44,22 +44,4 @@ public class ReplayParser {
     public List<Packet> getPackets() {
         return packets;
     }
-
-    private int getType() {
-        return ByteSwapper.swap(replayPackets.getInt());
-    }
-
-    private int getLength() {
-        return ByteSwapper.swap(replayPackets.getInt());
-    }
-
-    private float getClock() {
-        return replayPackets.getFloat();
-    }
-
-    private ByteBuffer getRawPacketData(int length) {
-        return replayPackets.get(new byte[length]);
-    }
-
-
 }
