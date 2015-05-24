@@ -37,11 +37,9 @@ public class PacketFactory {
                 return new PacketFF(type, length, clock, buffer);
 
         }
-<<<<<<< HEAD
-=======
 //        0x26 - Main player specific data
 //        0xffffffff - The last packet you will see, indicates the end of stream
->>>>>>> f28fc5e2c1bc48fdba2349c353e88ef1550ce2e4
+
         return null;
     }
 }
