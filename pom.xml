@@ -12,7 +12,8 @@
         <module>replayanalyzer</module>
         <module>replaydecoder</module>
     	<module>scrapper</module>
-  </modules>
+        <module>common</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

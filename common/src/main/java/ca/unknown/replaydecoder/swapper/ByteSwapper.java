@@ -20,7 +20,6 @@ package ca.unknown.replaydecoder.swapper;
 //package no.geosoft.cc.util;
 
 
-
 /**
  * Utility class for doing byte swapping (i.e. conversion between
  * little-endian and big-endian representations) of different data types.
@@ -75,7 +74,7 @@ public class ByteSwapper {
         long b8 = (value >> 56) & 0xff;
 
         return b1 << 56 | b2 << 48 | b3 << 40 | b4 << 32 |
-            b5 << 24 | b6 << 16 | b7 << 8 | b8;
+                b5 << 24 | b6 << 16 | b7 << 8 | b8;
     }
 
     /**
