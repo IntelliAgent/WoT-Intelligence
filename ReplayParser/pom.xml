@@ -11,5 +11,13 @@
 
     <artifactId>replayparser</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>ca.unknown</groupId>
+            <artifactId>replaydecoder</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
