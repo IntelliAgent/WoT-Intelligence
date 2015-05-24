@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 public interface PacketReader {
     int readType();
 
+    int readSubType();
+
     int readLength();
 
     float readClock();

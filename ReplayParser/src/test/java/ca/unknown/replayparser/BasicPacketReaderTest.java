@@ -1,6 +1,5 @@
 package ca.unknown.replayparser;
 
-import ca.unknown.replayparser.packets.PacketType;
 import ca.unknown.replayparser.reader.BasicPacketReader;
 import ca.unknown.replayparser.reader.PacketReader;
 import org.junit.After;
@@ -32,13 +31,11 @@ public class BasicPacketReaderTest {
     private static ByteBuffer getReplayRawData() {
         byte[] data = null;
         try {
-            Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/ca.unknown.replayparser/decompressedData.dat");
+            Path path = Paths.get(System.getProperty("user.dir") + "/src/test/resources/decompressedData.wia");
             data = Files.readAllBytes(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return ByteBuffer.wrap(data);
     }
 
@@ -53,14 +50,18 @@ public class BasicPacketReaderTest {
     }
 
     @Test
-    public void rawDataSizeShouldNotBeZero(){
+    public void rawDataSizeShouldNotBeZero() {
         assertTrue(packetReader.getRawData().limit() > 0);
     }
 
     @Test
-    public void whenReadingFirstIntFromPacketShouldReadFIRSTPACKET() {
+    public void lengthAndRawDataSizeShouldBeTheSameSize() {
+        int length = packetReader.readLength();
         int type = packetReader.readType();
-        assertEquals(PacketType.FIRST_PACKET, PacketType.fromInt(type));
+        float clock = packetReader.readClock();
+        ByteBuffer payload = packetReader.readPayload(length);
+
+        assertEquals(length, payload.array().length);
     }
 
     @Test
@@ -70,13 +71,13 @@ public class BasicPacketReaderTest {
         List<Float> clock = new LinkedList<>();
 
         while (packetReader.hasRemaining()) {
-            type.add(packetReader.readType());
             length.add(packetReader.readLength());
+            type.add(packetReader.readType());
             clock.add(packetReader.readClock());
             packetReader.readPayload(length.get(length.size() - 1));
         }
 
-        assertTrue(type.size() == length.size());
+assertEquals(type.size(), length.size());
         assertTrue(!type.isEmpty());
     }
 }

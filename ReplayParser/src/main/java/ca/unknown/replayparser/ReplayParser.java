@@ -37,8 +37,11 @@ public class ReplayParser {
 
             packetRawData = packetReader.readPayload(length);
 
-            packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
+            if(PacketType.fromInt(type) != null)
+                packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
         }
+
+        packets.forEach(System.out::println);
     }
 
     public List<Packet> getPackets() {

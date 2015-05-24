@@ -19,12 +19,17 @@ public class BasicPacketReader implements PacketReader {
 
     @Override
     public int readType() {
-        return ByteSwapper.swap(replayData.getInt());
+        return readInt();
+    }
+
+    @Override
+    public int readSubType() {
+        return readInt();
     }
 
     @Override
     public int readLength() {
-        return ByteSwapper.swap(replayData.getInt());
+        return readInt();
     }
 
     @Override
@@ -33,12 +38,18 @@ public class BasicPacketReader implements PacketReader {
     }
 
     @Override
-    public boolean hasRemaining() {
-        return replayData.hasRemaining();
+    public ByteBuffer readPayload(int length) {
+        byte[] dst = new byte[length];
+        replayData.get(dst);
+        return ByteBuffer.wrap(dst);
+    }
+
+    private int readInt() {
+        return ByteSwapper.swap(replayData.getInt());
     }
 
     @Override
-    public ByteBuffer readPayload(int length) {
-        return replayData.get(new byte[length]);
+    public boolean hasRemaining() {
+        return replayData.hasRemaining();
     }
 }

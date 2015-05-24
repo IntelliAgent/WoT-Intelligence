@@ -47,6 +47,7 @@ public enum PacketType {
                 return MAIN_PLAYER_SPECIFIC_DATA_NEXT;
             case 0xFFFFFFFF:
                 return LAST_PACKET;
+
         }
         return null;
     }

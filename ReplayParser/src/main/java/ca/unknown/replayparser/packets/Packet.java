@@ -1,26 +1,31 @@
 package ca.unknown.replayparser.packets;
 
+import com.google.gson.Gson;
+
 import java.nio.ByteBuffer;
 
 public abstract class Packet {
 
-    private int length;
-    private PacketType type;
-    private float clock;
-    private ByteBuffer buffer;
+    protected int length;
+    protected PacketType type;
+    protected float clock;
+    protected ByteBuffer payload;
+    protected int playerID;
 
 
-    public Packet(PacketType type, int length, float clock, ByteBuffer buffer) {
+    public Packet(PacketType type, int length, float clock, ByteBuffer payload) {
         this.type = type;
         this.length = length;
         this.clock = clock;
-        this.buffer = buffer;
+        this.playerID = payload.getInt();
+        this.payload = payload;
     }
 
     public abstract void toReadableFormat();
 
     @Override
     public String toString() {
-        return "";
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }
