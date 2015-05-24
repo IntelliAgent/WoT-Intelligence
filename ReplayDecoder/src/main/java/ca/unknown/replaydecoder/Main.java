@@ -1,6 +1,13 @@
 package ca.unknown.replaydecoder;
 
+import ca.unknown.replayparser.ReplayParser;
+
 import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Main {
@@ -10,14 +17,26 @@ public class Main {
         System.out.print("Input replay path:");
         String filename = scanner.nextLine();
         File folder = new File(filename);
+        System.out.print("Output data path:");
+        String outputDirectory = scanner.nextLine();
+
+        Path outputDirectoryPath = Paths.get(outputDirectory);
+        if (!Files.exists(outputDirectoryPath)) {
+            try {
+                Files.createDirectory(outputDirectoryPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         File[] listOfReplays = folder.listFiles();
 
         if (listOfReplays != null) {
-            decodeReplays(listOfReplays);
+            decodeReplays(listOfReplays, outputDirectoryPath);
         }
     }
 
-    private static void decodeReplays(File[] listOfReplays) {
+    private static void decodeReplays(File[] listOfReplays, Path outputDirectory) {
         for (File replay : listOfReplays) {
             if (isExtensionReplayValid(replay)) {
 
@@ -27,11 +46,12 @@ public class Main {
 
                 int numberOfJsonBlock = replayFileReader.getNumberOfBlocks();
 
-                ReplayDecoder replayDecoder = getReplayDecoder(numberOfJsonBlock, replayFileReader);
-
+                ReplayDecoder replayDecoder = getReplayDecoder(numberOfJsonBlock, replayFileReader, outputDirectory);
+                ByteBuffer decodedReplay = null;
                 if (replayDecoder != null) {
-                    replayDecoder.decode();
+                    decodedReplay = replayDecoder.decode();
                 }
+                ReplayParser replayParser = new ReplayParser(decodedReplay);
             }
         }
     }
@@ -40,12 +60,12 @@ public class Main {
         return replay.isFile() && replay.getName().endsWith(".wotreplay");
     }
 
-    private static ReplayDecoder getReplayDecoder(int numberOfJsonBlock, ReplayFileReader replayFileReader) {
+    private static ReplayDecoder getReplayDecoder(int numberOfJsonBlock, ReplayFileReader replayFileReader, Path outputDirectory) {
         ReplayDecoder replayDecoder = null;
         if (numberOfJsonBlock == 1) {
-            replayDecoder = new ReplayDecoderWithOneBlock(replayFileReader);
+            replayDecoder = new ReplayDecoderWithOneBlock(replayFileReader, outputDirectory);
         } else if (numberOfJsonBlock == 2) {
-            replayDecoder = new ReplayDecoderWithTwoBlocks(replayFileReader);
+            replayDecoder = new ReplayDecoderWithTwoBlocks(replayFileReader, outputDirectory);
         }
         return replayDecoder;
     }

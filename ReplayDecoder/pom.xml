@@ -22,6 +22,11 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.18.1</version>
         </dependency>
+        <dependency>
+            <groupId>ca.unknown</groupId>
+            <artifactId>replayparser</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
