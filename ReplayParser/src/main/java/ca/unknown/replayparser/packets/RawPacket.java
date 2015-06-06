@@ -1,15 +1,17 @@
 package ca.unknown.replayparser.packets;
 
 
+import ca.unknown.common.swapper.ByteSwapper;
+import ca.unknown.replayparser.packets.subtypes.SubPacketType;
+
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+
+import static ca.unknown.replayparser.packets.subtypes.SubPacketType.fromInt;
 
 public class RawPacket {
-  private static final int NO_SUBTYPE = -1;
+  private PacketType type;
 
-  private int type;
-
-  private int subtype = NO_SUBTYPE;
+  private SubPacketType subtype;
 
   private int payloadLength;
 
@@ -17,27 +19,23 @@ public class RawPacket {
 
   private ByteBuffer payload;
 
-  public RawPacket(int type, int subtype, int payloadLength, int clock, ByteBuffer payload){
-    this.type = type;
-    this.subtype = subtype;
+  public RawPacket(int type, int subtype, int payloadLength, float clock, ByteBuffer payload){
+    this.type = PacketType.fromInt(type);
+    this.subtype = fromInt(subtype);
     this.payloadLength = payloadLength;
     this.clock = clock;
     this.payload = payload;
   }
 
   public RawPacket(int type, int payloadLength, float clock, ByteBuffer payload){
-    this.type = type;
+    this.type = PacketType.fromInt(type);
     this.payloadLength = payloadLength;
     this.clock = clock;
     this.payload = payload;
   }
 
-  public int getType() {
+  public PacketType getType() {
     return type;
-  }
-
-  public int getSubtype() {
-    return subtype;
   }
 
   public int getPayloadLength() {
@@ -53,6 +51,17 @@ public class RawPacket {
   }
 
   public boolean hasSubtype(){
-    return subtype == NO_SUBTYPE;
+    return subtype == null;
+  }
+
+  public SubPacketType getSubType() {
+    fetchSubtype();
+    return hasSubtype() ? subtype : fetchSubtype();
+  }
+
+  private SubPacketType fetchSubtype() {
+    int subtypeNumber = ByteSwapper.swap(payload.getInt(4));
+    payload.rewind();
+    return fromInt(subtypeNumber);
   }
 }
