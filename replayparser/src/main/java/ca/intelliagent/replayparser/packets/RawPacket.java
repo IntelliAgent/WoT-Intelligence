@@ -60,4 +60,12 @@ public class RawPacket {
     payload.rewind();
     return fromInt(subtypeNumber);
   }
+
+  @Override
+  public String toString(){
+    String s = "Type : " + type
+            + " Length : " + payloadLength
+            + " Clock : " + clock;
+    return s;
+  }
 }
