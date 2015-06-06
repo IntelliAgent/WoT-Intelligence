@@ -1,18 +1,12 @@
 package ca.unknown.replayparser.packets;
 
 
-import ca.unknown.common.swapper.ByteSwapper;
-import ca.unknown.replayparser.packets.subtypes.SubPacketType;
 import ca.unknown.replayparser.packets.subtypes.packet07.SubPacket0703;
 import ca.unknown.replayparser.packets.subtypes.packet07.SubPacket0707;
 import ca.unknown.replayparser.packets.subtypes.packet08.SubPacket0801;
 import ca.unknown.replayparser.packets.subtypes.packet08.SubPacket0805;
 import ca.unknown.replayparser.packets.subtypes.packet08.SubPacket080B;
 import ca.unknown.replayparser.packets.subtypes.packet08.SubPacket0817;
-
-import java.nio.ByteBuffer;
-
-import static ca.unknown.replayparser.packets.subtypes.SubPacketType.fromInt;
 
 public class PacketFactory {
     /**
