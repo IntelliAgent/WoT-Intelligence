@@ -7,6 +7,10 @@ public class Packet00 extends Packet {
         super(type, length, clock, payload);
     }
 
+    public Packet00(RawPacket rawPacket) {
+        super(rawPacket);
+    }
+
     @Override
     public void toReadableFormat() {
 

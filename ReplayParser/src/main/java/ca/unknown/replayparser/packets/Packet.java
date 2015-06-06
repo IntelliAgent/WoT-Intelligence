@@ -22,6 +22,14 @@ public abstract class Packet {
         this.payload = payload;
     }
 
+    public Packet(RawPacket rawPacket){
+        this.type = rawPacket.getType();
+        this.length = rawPacket.getPayloadLength();
+        this.clock = rawPacket.getClock();
+        this.playerID = rawPacket.getPayload().getInt();
+        this.payload = rawPacket.getPayload();
+    }
+
     public abstract void toReadableFormat();
 
     @Override
