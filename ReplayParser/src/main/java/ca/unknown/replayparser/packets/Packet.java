@@ -1,6 +1,7 @@
 package ca.unknown.replayparser.packets;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.nio.ByteBuffer;
 
@@ -25,7 +26,7 @@ public abstract class Packet {
 
     @Override
     public String toString() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
 }

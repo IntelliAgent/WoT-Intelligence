@@ -31,13 +31,14 @@ public class ReplayParser {
 
         while (packetReader.hasRemaining()) {
 
-            type = packetReader.readType();
             length = packetReader.readLength();
+            type = packetReader.readType();
             clock = packetReader.readClock();
 
             packetRawData = packetReader.readPayload(length);
 
-            if(PacketType.fromInt(type) != null)
+
+            if (PacketType.fromInt(type) != null && length > 0 && packetRawData != null)
                 packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
         }
 

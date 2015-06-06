@@ -1,8 +1,8 @@
 package ca.unknown.replayparser.reader;
 
-import ca.unknown.common.swapper.ByteSwapper;
-
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 
 public class BasicPacketReader implements PacketReader {
 
@@ -41,11 +41,12 @@ public class BasicPacketReader implements PacketReader {
     public ByteBuffer readPayload(int length) {
         byte[] dst = new byte[length];
         replayData.get(dst);
-        return ByteBuffer.wrap(dst);
+        ByteBuffer wrap = ByteBuffer.wrap(dst);
+        return wrap.order(ByteOrder.LITTLE_ENDIAN);
     }
 
     private int readInt() {
-        return ByteSwapper.swap(replayData.getInt());
+        return replayData.getInt();
     }
 
     @Override

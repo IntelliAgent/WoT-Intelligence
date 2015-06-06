@@ -2,7 +2,7 @@ package ca.unknown.replayparser.packets;
 
 
 import ca.unknown.common.swapper.ByteSwapper;
-import ca.unknown.replayparser.packets.subtypes.*;
+import ca.unknown.replayparser.packets.subtypes.SubPacketType;
 import ca.unknown.replayparser.packets.subtypes.packet07.SubPacket0703;
 import ca.unknown.replayparser.packets.subtypes.packet07.SubPacket0707;
 import ca.unknown.replayparser.packets.subtypes.packet08.SubPacket0801;
@@ -12,16 +12,13 @@ import ca.unknown.replayparser.packets.subtypes.packet08.SubPacket0817;
 
 import java.nio.ByteBuffer;
 
-import static ca.unknown.replayparser.packets.subtypes.SubPacketType.*;
+import static ca.unknown.replayparser.packets.subtypes.SubPacketType.fromInt;
 
 public class PacketFactory {
     /**
      * The packet factory method delegates packet construction to the proper packet type
      */
     public Packet createPacket(PacketType type, int length, float clock, ByteBuffer payload) {
-        System.out.println(type);
-        System.out.println(length);
-        System.out.println(clock);
         switch (type) {
             case BATTLE_LEVEL_SETUP:
                 return new Packet00(type, length, clock, payload);
@@ -30,14 +27,16 @@ public class PacketFactory {
             case TANK_APPEARED_NEXT:
                 return new Packet05(type, length, clock, payload);
             case VARIOUS_TANK_RELATED_UPDATES:
-                switch(getSubType(payload)){
+                switch (getSubType(payload)) {
                     case HEALTH_UPDATE:
                         return new SubPacket0703(type, length, clock, payload);
                     case DESTROYED_TRACK:
                         return new SubPacket0707(type, length, clock, payload);
+                    default:
+                        return new Packet07(type, length, clock, payload);
                 }
             case VARIOUS_GAME_STATE_UPDATES:
-                switch(getSubType(payload)){
+                switch (getSubType(payload)) {
                     case UPDATE_VEHICLE:
                         return new SubPacket080B(type, length, clock, payload);
                     case UPDATE_VEHICLE_LIST:
@@ -46,6 +45,8 @@ public class PacketFactory {
                         return new SubPacket0805(type, length, clock, payload);
                     case VEHICLE_TRACKED:
                         return new SubPacket0817(type, length, clock, payload);
+                    default:
+                        return new Packet08(type, length, clock, payload);
                 }
             case VEHICLE_POSITION_ROTATION_UPDATES:
                 return new Packet0a(type, length, clock, payload);
@@ -68,7 +69,7 @@ public class PacketFactory {
         return null;
     }
 
-    private SubPacketType getSubType(ByteBuffer payload){
+    private SubPacketType getSubType(ByteBuffer payload) {
         int subType = ByteSwapper.swap(payload.getInt(4));
         payload.rewind();
         return fromInt(subType);

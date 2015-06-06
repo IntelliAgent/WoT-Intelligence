@@ -16,7 +16,7 @@ public class SubPacket0703 extends Packet07 {
     }
 
     @Override
-    public void toReadableFormat(){
+    public void toReadableFormat() {
 
     }
 }
