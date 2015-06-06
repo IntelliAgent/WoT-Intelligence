@@ -20,6 +20,8 @@ public abstract class Packet {
         this.clock = clock;
         playerID = payload.getInt();
         this.payload = payload;
+
+        parse();
     }
 
     public Packet(RawPacket rawPacket){
@@ -28,9 +30,13 @@ public abstract class Packet {
         this.clock = rawPacket.getClock();
         this.playerID = rawPacket.getPayload().getInt();
         this.payload = rawPacket.getPayload();
+
+        parse();
     }
 
     public abstract void toReadableFormat();
+
+    protected abstract void parse(ByteBuffer payload);
 
     @Override
     public String toString() {

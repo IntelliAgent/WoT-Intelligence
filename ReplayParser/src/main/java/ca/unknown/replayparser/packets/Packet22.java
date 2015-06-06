@@ -7,8 +7,17 @@ public class Packet22 extends Packet {
         super(type, length, clock, buffer);
     }
 
+    public Packet22(RawPacket rawPacket) {
+        super(rawPacket);
+    }
+
     @Override
     public void toReadableFormat() {
+
+    }
+
+    @Override
+    protected void parse(ByteBuffer payload) {
 
     }
 }

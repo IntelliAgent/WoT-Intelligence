@@ -7,8 +7,17 @@ public class Packet16 extends Packet {
         super(type, length, clock, buffer);
     }
 
+    public Packet16(RawPacket rawPacket) {
+        super(rawPacket);
+    }
+
     @Override
     public void toReadableFormat() {
+
+    }
+
+    @Override
+    protected void parse(ByteBuffer payload) {
 
     }
 }

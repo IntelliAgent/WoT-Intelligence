@@ -8,6 +8,10 @@ public class Packet0801 extends Packet08 {
         super(type, length, clock, byteBuffer);
     }
 
+    public Packet0801(RawPacket rawPacket) {
+        super(rawPacket);
+    }
+
     @Override
     public void toReadableFormat() {
 
