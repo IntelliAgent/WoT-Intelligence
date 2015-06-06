@@ -48,6 +48,6 @@ public class BasicPacketReader implements PacketReader {
         float clock = readClock();
         byte[] dst = new byte[length];
         replayData.get(dst);
-        return new RawPacket(type, length, clock, ByteBuffer.wrap(dst));
+        return new RawPacket(type, length, clock, ByteBuffer.wrap(dst).order(ByteOrder.LITTLE_ENDIAN));
     }
 }
