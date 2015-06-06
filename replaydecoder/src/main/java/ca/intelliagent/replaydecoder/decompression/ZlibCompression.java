@@ -8,14 +8,15 @@ import java.util.zip.Inflater;
 /**
  * Inspired by http://stackoverflow.com/q/6173920/600500.
  */
-public class ZlibCompression {
+public final class ZlibCompression {
 
     public static byte[] decompressData(FileInputStream fileInputStream) throws IOException, DataFormatException {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
 
-        for (int readNum; (readNum = fileInputStream.read(buf)) != -1; ) {
+        int readNum;
+        while ((readNum = fileInputStream.read(buf)) != -1) {
             bos.write(buf, 0, readNum);
         }
 

@@ -14,7 +14,7 @@ public abstract class ReplayDecoder {
     protected final ReplayFileReader replayFileReader;
     protected final Path defaultDirectory;
 
-    public ReplayDecoder(ReplayFileReader replayFileReader, Path outputDirectory) {
+    protected ReplayDecoder(ReplayFileReader replayFileReader, Path outputDirectory) {
         this.replayFileReader = replayFileReader;
         defaultDirectory = outputDirectory;
     }
@@ -25,10 +25,12 @@ public abstract class ReplayDecoder {
         String replayExtracted =
                 replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
 
-        String decompressed = defaultDirectory + replayExtracted + " - Decompressed.dat";
+        StringBuilder sb = new StringBuilder();
+        String decompressed = sb.append(defaultDirectory).append(replayExtracted).append(" - Decompressed.dat").toString();
         ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
 
-        String decryptedFile = defaultDirectory + replayExtracted + " - Decrypted.dat";
+        sb = new StringBuilder();
+        String decryptedFile = sb.append(defaultDirectory).append(replayExtracted).append(" - Decrypted.dat").toString();
         FileOutputStream decompressFile = null;
         FileInputStream fis = null;
         FileOutputStream fos = null;
