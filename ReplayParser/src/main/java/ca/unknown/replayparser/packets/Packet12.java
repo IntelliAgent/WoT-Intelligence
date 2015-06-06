@@ -15,9 +15,4 @@ public class Packet12 extends Packet {
     public void toReadableFormat() {
 
     }
-
-    @Override
-    protected void parse(ByteBuffer payload) {
-
-    }
 }

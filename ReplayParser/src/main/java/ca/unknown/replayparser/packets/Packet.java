@@ -21,7 +21,7 @@ public abstract class Packet {
         playerID = payload.getInt();
         this.payload = payload;
 
-        parse();
+        parse(payload);
     }
 
     public Packet(RawPacket rawPacket){
@@ -31,12 +31,14 @@ public abstract class Packet {
         this.playerID = rawPacket.getPayload().getInt();
         this.payload = rawPacket.getPayload();
 
-        parse();
+        parse(payload);
     }
 
     public abstract void toReadableFormat();
 
-    protected abstract void parse(ByteBuffer payload);
+    protected void parse(ByteBuffer payload){
+
+    };
 
     @Override
     public String toString() {
