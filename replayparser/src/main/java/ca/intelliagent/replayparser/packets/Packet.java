@@ -1,17 +1,14 @@
 package ca.intelliagent.replayparser.packets;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.nio.ByteBuffer;
 
 public abstract class Packet {
 
-    protected int length;
-    protected PacketType type;
-    protected float clock;
-    protected ByteBuffer payload;
-    protected int playerID;
+    protected final int length;
+    protected final PacketType type;
+    protected final float clock;
+    protected final ByteBuffer payload;
+    protected final int playerID;
 
 
     protected Packet(PacketType type, int length, float clock, ByteBuffer payload) {
@@ -34,6 +31,10 @@ public abstract class Packet {
         parse(payload);
     }
 
+    public int getPlayerID() {
+        return playerID;
+    }
+
     public abstract void toReadableFormat();
 
     protected void parse(ByteBuffer payload){
@@ -42,7 +43,8 @@ public abstract class Packet {
 
     @Override
     public String toString() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(this);
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        return gson.toJson(this);
+        return new String();
     }
 }

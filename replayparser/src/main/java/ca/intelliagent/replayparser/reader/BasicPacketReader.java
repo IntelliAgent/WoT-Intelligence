@@ -12,7 +12,7 @@ public class BasicPacketReader implements PacketReader {
 
     public BasicPacketReader(ByteBuffer replayData) {
         this.replayData = replayData;
-        replayData.order(ByteOrder.LITTLE_ENDIAN);
+        this.replayData.order(ByteOrder.LITTLE_ENDIAN);
     }
 
     @Override
