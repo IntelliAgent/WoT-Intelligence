@@ -47,18 +47,22 @@ public class RawPacket {
   }
 
   public boolean hasSubtype(){
-    return subtype == null;
+    return subtype != null;
   }
 
   public SubPacketType getSubType() {
-    fetchSubtype();
     return hasSubtype() ? subtype : fetchSubtype();
+  }
+
+  public boolean isValid(){
+    return type != null;
   }
 
   private SubPacketType fetchSubtype() {
     int subtypeNumber = ByteSwapper.swap(payload.getInt(4));
     payload.rewind();
-    return fromInt(subtypeNumber);
+    subtype = fromInt(subtypeNumber);
+    return subtype;
   }
 
   @Override

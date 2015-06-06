@@ -26,8 +26,10 @@ public class ReplayParser {
 
             rawPacket = packetReader.next();
 
-            Packet packet = packetFactory.createPacket(rawPacket);
-            packets.add(packet);
+            if(rawPacket.isValid()){
+                Packet packet = packetFactory.createPacket(rawPacket);
+                packets.add(packet);
+            }
         }
 
         packets.forEach(System.out::println);
