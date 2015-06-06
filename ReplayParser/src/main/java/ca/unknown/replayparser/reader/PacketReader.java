@@ -1,19 +1,11 @@
 package ca.unknown.replayparser.reader;
 
+import ca.unknown.replayparser.packets.RawPacket;
+
 import java.nio.ByteBuffer;
+import java.util.Iterator;
 
-public interface PacketReader {
-    int readType();
-
-    int readSubType();
-
-    int readLength();
-
-    float readClock();
-
-    boolean hasRemaining();
-
-    ByteBuffer readPayload(int length);
+public interface PacketReader extends Iterator<RawPacket> {
 
     ByteBuffer getRawData();
 }

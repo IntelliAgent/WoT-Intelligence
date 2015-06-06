@@ -1,8 +1,6 @@
 package ca.unknown.replayparser;
 
-import ca.unknown.replayparser.packets.Packet;
-import ca.unknown.replayparser.packets.PacketFactory;
-import ca.unknown.replayparser.packets.PacketType;
+import ca.unknown.replayparser.packets.*;
 import ca.unknown.replayparser.reader.PacketReader;
 
 import java.nio.ByteBuffer;
@@ -12,9 +10,9 @@ import java.util.List;
 public class ReplayParser {
     private final PacketFactory packetFactory;
 
-    private List<Packet> packets;
+    private final List<Packet> packets;
 
-    private PacketReader packetReader;
+    private final PacketReader packetReader;
 
     public ReplayParser(PacketReader packetReader) {
         this.packetReader = packetReader;
@@ -23,23 +21,15 @@ public class ReplayParser {
     }
 
     public void parsePackets() {
-        int type;
-        int length;
-        float clock;
 
         ByteBuffer packetRawData;
+        RawPacket rawPacket;
+        while (packetReader.hasNext()) {
 
-        while (packetReader.hasRemaining()) {
+            rawPacket = packetReader.next();
 
-            length = packetReader.readLength();
-            type = packetReader.readType();
-            clock = packetReader.readClock();
-
-            packetRawData = packetReader.readPayload(length);
-
-
-            if (PacketType.fromInt(type) != null && length > 0 && packetRawData != null)
-                packets.add(packetFactory.createPacket(PacketType.fromInt(type), length, clock, packetRawData));
+            Packet packet = packetFactory.createPacket(rawPacket);
+            packets.add(packet);
         }
 
         packets.forEach(System.out::println);
