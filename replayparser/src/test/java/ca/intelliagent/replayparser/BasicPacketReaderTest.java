@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.*;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertEquals;
 
 public class BasicPacketReaderTest {
 

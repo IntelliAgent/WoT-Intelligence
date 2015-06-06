@@ -3,6 +3,7 @@ package ca.intelliagent.replayparser.reader;
 import ca.intelliagent.replayparser.packets.RawPacket;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 
 public class BasicPacketReader implements PacketReader {
@@ -11,6 +12,7 @@ public class BasicPacketReader implements PacketReader {
 
     public BasicPacketReader(ByteBuffer replayData) {
         this.replayData = replayData;
+        replayData.order(ByteOrder.LITTLE_ENDIAN);
     }
 
     @Override
@@ -44,6 +46,8 @@ public class BasicPacketReader implements PacketReader {
         int length = readLength();
         int type = readType();
         float clock = readClock();
-        return new RawPacket(type, length, clock, replayData);
+        byte[] dst = new byte[length];
+        replayData.get(dst);
+        return new RawPacket(type, length, clock, ByteBuffer.wrap(dst));
     }
 }
