@@ -28,7 +28,10 @@ package ca.unknown.common.swapper;
  *
  * @author <a href="mailto:jacob.dreyer@geosoft.no">Jacob Dreyer</a>
  */
-public class ByteSwapper {
+public final class ByteSwapper {
+    private ByteSwapper() {
+    }
+
     /**
      * Byte swap a single short value.
      *

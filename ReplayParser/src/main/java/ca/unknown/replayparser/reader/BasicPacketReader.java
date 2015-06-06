@@ -22,10 +22,6 @@ public class BasicPacketReader implements PacketReader {
         return readInt();
     }
 
-    private int readSubType() {
-        return readInt();
-    }
-
     private int readLength() {
         return readInt();
     }
@@ -33,14 +29,6 @@ public class BasicPacketReader implements PacketReader {
     private float readClock() {
         return replayData.getFloat();
     }
-
-//    @Override
-//    public ByteBuffer readPayload(int length) {
-//        byte[] dst = new byte[length];
-//        replayData.get(dst);
-//        ByteBuffer wrap = ByteBuffer.wrap(dst);
-//        return wrap.order(ByteOrder.LITTLE_ENDIAN);
-//    }
 
     private int readInt() {
         return replayData.getInt();
