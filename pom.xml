@@ -63,7 +63,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.3.2</version>
                 <configuration>
-                    <mainClass>ca.unknown.replaydecoder.Main</mainClass>
+                    <mainClass>ca.intelliagent.replaydecoder.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

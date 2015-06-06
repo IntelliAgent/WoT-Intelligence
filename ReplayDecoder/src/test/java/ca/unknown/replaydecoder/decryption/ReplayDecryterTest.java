@@ -1,4 +1,4 @@
-package ca.unknown.replaydecoder.decryption;
+package ca.intelliagent.replaydecoder.decryption;
 
 public class ReplayDecryterTest {
 

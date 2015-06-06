@@ -1,4 +1,4 @@
-package ca.unknown.replaydecoder.decompression;
+package ca.intelliagent.replaydecoder.decompression;
 
 import org.junit.Test;
 

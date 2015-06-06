@@ -1,17 +1,13 @@
-package ca.unknown.scrapper;
+package ca.intelliagent.scrapper;
 
-import ca.unknown.scrapper.action.*;
-import ca.unknown.scrapper.invoker.ConcreteInvoker;
-import ca.unknown.scrapper.invoker.Invoker;
-import ca.unknown.scrapper.scrapeTarget.AttributeTarget;
-
+import ca.intelliagent.scrapper.action.*;
+import ca.intelliagent.scrapper.invoker.ConcreteInvoker;
+import ca.intelliagent.scrapper.invoker.Invoker;
+import ca.intelliagent.scrapper.scrapeTarget.AttributeTarget;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class JsoupHtmlScrapperTest {
 
@@ -46,7 +42,7 @@ public class JsoupHtmlScrapperTest {
       System.out.println(scrapeResult);
 
     for (Map<String, List<String>> header : redirects) {
-      for (Map.Entry<String, List<String>> entry : header.entrySet()) {
+      for (Entry<String, List<String>> entry : header.entrySet()) {
         System.out.print(entry.getKey() + " : ");
         for (String values : entry.getValue())
           System.out.println(values);

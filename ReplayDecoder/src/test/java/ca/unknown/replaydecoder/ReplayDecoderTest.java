@@ -1,9 +1,6 @@
-package ca.unknown.replaydecoder;
+package ca.intelliagent.replaydecoder;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
