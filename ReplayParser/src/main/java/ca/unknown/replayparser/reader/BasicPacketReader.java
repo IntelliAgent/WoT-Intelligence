@@ -1,12 +1,13 @@
 package ca.unknown.replayparser.reader;
 
+import ca.unknown.replayparser.packets.RawPacket;
+
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 
 public class BasicPacketReader implements PacketReader {
 
-    private ByteBuffer replayData;
+    private final ByteBuffer replayData;
 
     public BasicPacketReader(ByteBuffer replayData) {
         this.replayData = replayData;
@@ -17,40 +18,44 @@ public class BasicPacketReader implements PacketReader {
         return replayData;
     }
 
-    @Override
-    public int readType() {
+    private int readType() {
         return readInt();
     }
 
-    @Override
-    public int readSubType() {
+    private int readSubType() {
         return readInt();
     }
 
-    @Override
-    public int readLength() {
+    private int readLength() {
         return readInt();
     }
 
-    @Override
-    public float readClock() {
+    private float readClock() {
         return replayData.getFloat();
     }
 
-    @Override
-    public ByteBuffer readPayload(int length) {
-        byte[] dst = new byte[length];
-        replayData.get(dst);
-        ByteBuffer wrap = ByteBuffer.wrap(dst);
-        return wrap.order(ByteOrder.LITTLE_ENDIAN);
-    }
+//    @Override
+//    public ByteBuffer readPayload(int length) {
+//        byte[] dst = new byte[length];
+//        replayData.get(dst);
+//        ByteBuffer wrap = ByteBuffer.wrap(dst);
+//        return wrap.order(ByteOrder.LITTLE_ENDIAN);
+//    }
 
     private int readInt() {
         return replayData.getInt();
     }
 
     @Override
-    public boolean hasRemaining() {
+    public boolean hasNext() {
         return replayData.hasRemaining();
+    }
+
+    @Override
+    public RawPacket next() {
+        int length = readLength();
+        int type = readType();
+        float clock = readClock();
+        return new RawPacket(type, length, clock, replayData);
     }
 }

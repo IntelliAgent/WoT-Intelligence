@@ -14,11 +14,11 @@ public abstract class Packet {
     protected int playerID;
 
 
-    public Packet(PacketType type, int length, float clock, ByteBuffer payload) {
+    protected Packet(PacketType type, int length, float clock, ByteBuffer payload) {
         this.type = type;
         this.length = length;
         this.clock = clock;
-        this.playerID = payload.getInt();
+        playerID = payload.getInt();
         this.payload = payload;
     }
 
