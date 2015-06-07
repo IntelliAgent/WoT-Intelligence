@@ -3,8 +3,8 @@ package ca.intelliagent.replayparser;
 import ca.intelliagent.replayparser.packets.*;
 import ca.intelliagent.replayparser.reader.PacketReader;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ReplayParser {
     private final PacketFactory packetFactory;
@@ -22,23 +22,17 @@ public class ReplayParser {
     public void parsePackets() {
 
         RawPacket rawPacket;
-        Set<Integer> playerIDs = new HashSet();
         while (packetReader.hasNext()) {
 
             rawPacket = packetReader.next();
 
             if (rawPacket.isValid()) {
                 Packet packet = packetFactory.createPacket(rawPacket);
-                int playerID = packet.getPlayerID();
-                if (playerID > 0 && playerID < 10000000){
-                    playerIDs.add(playerID);
-                }
                 packets.add(packet);
             }
         }
-        Stream<Integer> sorted = playerIDs.stream().sorted();
 
-        sorted.forEach(System.out::println);
+        packets.forEach(System.out::println);
     }
 
     public List<Packet> getPackets() {

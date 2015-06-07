@@ -1,11 +1,15 @@
 package ca.intelliagent.replayparser.packets;
 
+import com.google.gson.annotations.Expose;
+
 import java.nio.ByteBuffer;
 
 public class Packet0a extends Packet {
 
+    @Expose
     private float hullx, hully, hullz;
 
+    @Expose
     private float posx, posy, posz;
 
 

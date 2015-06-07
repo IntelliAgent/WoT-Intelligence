@@ -1,11 +1,13 @@
 package ca.intelliagent.replayparser.packets.subtypes.packet08;
 
 import ca.intelliagent.replayparser.packets.*;
+import com.google.gson.annotations.Expose;
 
 import java.nio.ByteBuffer;
 
 public class SubPacket0805 extends Packet08 {
 
+    @Expose
     private int source;
 
     public SubPacket0805(PacketType type, int length, float clock, ByteBuffer payload) {
