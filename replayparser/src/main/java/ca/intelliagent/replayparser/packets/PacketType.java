@@ -10,9 +10,6 @@ public enum PacketType {
     VEHICLE_POSITION_ROTATION_UPDATES(0x0A),
     GAME_STATUS(0x12),
     FIRST_PACKET(0x14),
-    MAIN_PLAYER_SPECIFIC_DATA(0x16),
-    MAIN_PLAYER_ID(0x1E),
-    MAIN_PLAYER_SPECIFIC_DATA_NEXT(0x22),
     MAIN_PLAYER_SPECIFIC_DATA_NEXT_NEXT(0x26), LAST_PACKET(0xFFFFFFFF);
 
     private final int value;
@@ -39,12 +36,6 @@ public enum PacketType {
                 return GAME_STATUS;
             case 0x14:
                 return FIRST_PACKET;
-            case 0x16:
-                return MAIN_PLAYER_SPECIFIC_DATA;
-            case 0x1E:
-                return MAIN_PLAYER_ID;
-            case 0x22:
-                return MAIN_PLAYER_SPECIFIC_DATA_NEXT;
             case 0xFFFFFFFF:
                 return LAST_PACKET;
 

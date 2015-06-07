@@ -45,12 +45,6 @@ public class PacketFactory {
                 return new Packet12(rawPacket);
             case FIRST_PACKET:
                 return new Packet14(rawPacket);
-            case MAIN_PLAYER_SPECIFIC_DATA:
-                return new Packet16(rawPacket);
-            case MAIN_PLAYER_ID:
-                return new Packet1e(rawPacket);
-            case MAIN_PLAYER_SPECIFIC_DATA_NEXT:
-                return new Packet22(rawPacket);
             case MAIN_PLAYER_SPECIFIC_DATA_NEXT_NEXT:
                 return new Packet26(rawPacket);
             case LAST_PACKET:

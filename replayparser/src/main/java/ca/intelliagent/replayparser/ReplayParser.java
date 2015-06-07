@@ -30,7 +30,7 @@ public class ReplayParser {
             if (rawPacket.isValid()) {
                 Packet packet = packetFactory.createPacket(rawPacket);
                 int playerID = packet.getPlayerID();
-                if (playerID > 0) {
+                if (playerID > 0 && playerID < 10000000){
                     playerIDs.add(playerID);
                 }
                 packets.add(packet);
