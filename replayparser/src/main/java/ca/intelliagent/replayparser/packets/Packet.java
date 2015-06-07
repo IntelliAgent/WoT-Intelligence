@@ -41,6 +41,26 @@ public abstract class Packet {
 
     public abstract void toReadableFormat();
 
+    public float getPosX() {
+        return 0.0F;
+    }
+
+    public float getPosY() {
+        return 0.0F;
+    }
+
+    public float getPosZ() {
+        return 0.0F;
+    }
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    public float getClock() {
+        return clock;
+    }
+
     protected void parse(ByteBuffer payload) {
 
     }

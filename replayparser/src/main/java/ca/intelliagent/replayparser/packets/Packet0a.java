@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 public class Packet0a extends Packet {
 
     @Expose
-    private float hullx, hully, hullz;
+    private float hullYaw, hully, hullz;
 
     @Expose
     private float posx, posy, posz;
@@ -23,15 +23,15 @@ public class Packet0a extends Packet {
 
     @Override
     protected void parse(ByteBuffer payload) {
-        payload.position(8);
-
-        posx = payload.getFloat();
-        posy = payload.getFloat();
-        posz = payload.getFloat();
-
         payload.position(12);
 
-        hullx = payload.getFloat();
+        posx = payload.getFloat();
+        posz = payload.getFloat();
+        posy = payload.getFloat();
+
+        payload.position(36);
+
+        hullYaw = payload.getFloat();
         hully = payload.getFloat();
         hullz = payload.getFloat();
     }
@@ -39,5 +39,20 @@ public class Packet0a extends Packet {
     @Override
     public void toReadableFormat() {
 
+    }
+
+    @Override
+    public float getPosX() {
+        return posx;
+    }
+
+    @Override
+    public float getPosY() {
+        return posy;
+    }
+
+    @Override
+    public float getPosZ() {
+        return posz;
     }
 }
