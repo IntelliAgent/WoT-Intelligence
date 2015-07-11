@@ -10,20 +10,20 @@ public class PostRequestAction extends AbstractAction {
     private final Map<String, String> postParam;
 
     private final String url;
-        
-    public PostRequestAction(HtmlScrapper scrapper, Map<String, String> postParam, String url){
-      super(scrapper);
-      this.postParam = postParam;
-      this.url = url;
+
+    public PostRequestAction(HtmlScrapper scrapper, Map<String, String> postParam, String url) {
+        super(scrapper);
+        this.postParam = postParam;
+        this.url = url;
     }
-    
+
     @Override
-    public Action execute(){
-      try{
-        scraper.postRequest(url, postParam);
-      }catch(IOException e){
-        return failureCallback;
-      }
-      return successCallback;
+    public Action execute() {
+        try {
+            scraper.postRequest(url, postParam);
+        } catch (IOException e) {
+            return failureCallback;
+        }
+        return successCallback;
     }
 }

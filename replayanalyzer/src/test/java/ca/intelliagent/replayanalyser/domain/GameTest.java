@@ -1,20 +1,15 @@
 package ca.intelliagent.replayanalyser.domain;
 
 import ca.intelliagent.replayanalyser.domain.game.Game;
-import ca.intelliagent.replaydecoder.ReplayDecoder;
 import ca.intelliagent.replaydecoder.ReplayFileReader;
-import ca.intelliagent.replayparser.ReplayParser;
-import junit.framework.TestCase;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
-
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 
-public class GameTest extends TestCase {
+public class GameTest {
     private static final String FILENAME = "/testReplay.wotreplay";
 
     private File replayFile;
@@ -22,15 +17,11 @@ public class GameTest extends TestCase {
     private ReplayFileReader reader;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         replayFile = new File(GameTest.class.getResource(FILENAME).getPath());
 
         reader = new ReplayFileReader(replayFile);
-        try {
-            reader.init();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        reader.init();
     }
 
     @Test

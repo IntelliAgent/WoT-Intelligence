@@ -11,7 +11,7 @@
         <module>replayparser</module>
         <module>replayanalyzer</module>
         <module>replaydecoder</module>
-    	<module>scrapper</module>
+        <module>scrapper</module>
         <module>common</module>
     </modules>
 

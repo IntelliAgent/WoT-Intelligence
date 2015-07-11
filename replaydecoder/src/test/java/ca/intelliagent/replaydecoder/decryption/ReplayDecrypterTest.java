@@ -1,13 +1,13 @@
 package ca.intelliagent.replaydecoder.decryption;
 
 import ca.intelliagent.replaydecoder.ReplayFileReader;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
-
-import static org.junit.Assert.assertEquals;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class ReplayDecrypterTest {
 
@@ -30,13 +30,11 @@ public class ReplayDecrypterTest {
         FileOutputStream fos = new FileOutputStream(tempsFile);
 
         ReplayDecrypter decrypter = new ReplayDecrypter(reader.getCryptedBlock());
-        byte[] withoutFos = decrypter.decryptToByteArray(reader.getCryptedBlock());
-        decrypter.decrypt(fos);
-
-        FileInputStream fis = new FileInputStream(tempsFile);
+        ByteBuffer decrypt = decrypter.decrypt();
 
         for (int i = 0; i < 4; i++) {
-            assertEquals(fis.read(), withoutFos[i]);
+            System.out.println(Byte.toUnsignedInt(decrypt.get()));
+
         }
     }
 

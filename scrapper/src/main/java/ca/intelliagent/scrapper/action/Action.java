@@ -2,9 +2,8 @@ package ca.intelliagent.scrapper.action;
 
 /**
  * @author TheCoconutChef
- *
- *	Defines actions to be performed by the scrapper
- *
+ *         <p>
+ *         Defines actions to be performed by the scrapper
  */
 public interface Action {
     /**

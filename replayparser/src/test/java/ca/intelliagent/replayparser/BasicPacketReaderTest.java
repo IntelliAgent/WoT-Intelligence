@@ -3,11 +3,16 @@ package ca.intelliagent.replayparser;
 import ca.intelliagent.replayparser.packets.RawPacket;
 import ca.intelliagent.replayparser.reader.BasicPacketReader;
 import ca.intelliagent.replayparser.reader.PacketReader;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;

@@ -4,7 +4,7 @@ import org.jsoup.nodes.Element;
 
 /**
  * @author TheCoconutChef
- *         <p/>
+ *         <p>
  *         Retrieves inner content of a member of the selection
  */
 public class HtmlTarget extends AbstractTarget {

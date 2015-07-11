@@ -4,7 +4,7 @@ import org.jsoup.nodes.Element;
 
 /**
  * @author TheCoconutChef
- *         <p/>
+ *         <p>
  *         Retrieves the value of an attribute of the outter most tag of
  *         a member of a selection.
  */

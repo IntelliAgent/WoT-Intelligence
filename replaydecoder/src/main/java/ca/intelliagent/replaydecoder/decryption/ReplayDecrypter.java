@@ -2,16 +2,14 @@ package ca.intelliagent.replaydecoder.decryption;
 
 import ca.intelliagent.replaydecoder.decryption.exception.CannotDecryptReplayException;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 public class ReplayDecrypter {
 
@@ -26,39 +24,7 @@ public class ReplayDecrypter {
         this.bytes = bytes;
     }
 
-    private static void decryptBlowfish(byte[] to_decrypt, FileOutputStream replayDecrypted) {
-        try {
-            Cipher cipher = getCipher();
-
-            int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
-            byte[] paddedToDecrypted = Arrays.copyOfRange(to_decrypt, 0, to_decrypt.length + padding_size);
-
-            byte[] decrypted = cipher.update(to_decrypt, 0, BLOCK_SIZE);
-            byte[] previous = decrypted;
-
-            replayDecrypted.write(decrypted);
-
-            for (int i = 8; i < paddedToDecrypted.length - BLOCK_SIZE; i += BLOCK_SIZE) {
-                byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, i, i + BLOCK_SIZE);
-                byte[] decrypt = cipher.update(toDecrypt);
-                previous = xorArrays(previous, decrypt);
-                replayDecrypted.write(previous, 0, BLOCK_SIZE);
-            }
-
-            byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, paddedToDecrypted.length - 8, paddedToDecrypted.length);
-            byte[] decrypt = cipher.doFinal(toDecrypt);
-
-            previous = xorArrays(previous, decrypt);
-
-            replayDecrypted.write(previous, 0, BLOCK_SIZE);
-            replayDecrypted.close();
-
-        } catch (Exception e) {
-            throw new CannotDecryptReplayException("Cannot decrypt replay exception", e);
-        }
-    }
-
-    private static byte[] decryptBlowfish(byte[] to_decrypt) {
+    private static ByteBuffer decryptBlowfish(byte[] to_decrypt) {
         try {
             Cipher cipher = getCipher();
             ByteOutputStream byteOutputStream = new ByteOutputStream();
@@ -67,6 +33,8 @@ public class ReplayDecrypter {
             byte[] paddedToDecrypted = Arrays.copyOfRange(to_decrypt, 0, to_decrypt.length + padding_size);
 
             byte[] previous = cipher.update(to_decrypt, 0, BLOCK_SIZE);
+
+            byteOutputStream.write(previous);
 
             for (int i = 8; i < paddedToDecrypted.length - BLOCK_SIZE; i += BLOCK_SIZE) {
                 byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, i, i + BLOCK_SIZE);
@@ -83,7 +51,8 @@ public class ReplayDecrypter {
             byteOutputStream.write(previous, 0, BLOCK_SIZE);
             byteOutputStream.close();
 
-            return byteOutputStream.getBytes();
+            return ByteBuffer.wrap(byteOutputStream.getBytes());
+
         } catch (Exception e) {
             throw new CannotDecryptReplayException("Cannot decrypt replay exception", e);
         }
@@ -106,12 +75,7 @@ public class ReplayDecrypter {
         return xor;
     }
 
-    public void decrypt(FileOutputStream replayDecrypted) {
-        decryptBlowfish(bytes, replayDecrypted);
-    }
-
-
-    public byte[] decryptToByteArray(byte[] compressedCrypted) {
-        return decryptBlowfish(compressedCrypted);
+    public ByteBuffer decrypt() {
+        return decryptBlowfish(bytes);
     }
 }

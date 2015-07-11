@@ -3,7 +3,10 @@ package ca.intelliagent.replayparser.packets;
 
 import ca.intelliagent.replayparser.packets.subtypes.packet07.SubPacket0703;
 import ca.intelliagent.replayparser.packets.subtypes.packet07.SubPacket0707;
-import ca.intelliagent.replayparser.packets.subtypes.packet08.*;
+import ca.intelliagent.replayparser.packets.subtypes.packet08.SubPacket0801;
+import ca.intelliagent.replayparser.packets.subtypes.packet08.SubPacket0805;
+import ca.intelliagent.replayparser.packets.subtypes.packet08.SubPacket080B;
+import ca.intelliagent.replayparser.packets.subtypes.packet08.SubPacket0817;
 
 public class PacketFactory {
     /**

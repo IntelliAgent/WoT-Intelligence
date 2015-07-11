@@ -1,6 +1,8 @@
 package ca.intelliagent.replayparser.packets.subtypes.packet08;
 
-import ca.intelliagent.replayparser.packets.*;
+import ca.intelliagent.replayparser.packets.Packet08;
+import ca.intelliagent.replayparser.packets.PacketType;
+import ca.intelliagent.replayparser.packets.RawPacket;
 import com.google.gson.annotations.Expose;
 
 import java.nio.ByteBuffer;
