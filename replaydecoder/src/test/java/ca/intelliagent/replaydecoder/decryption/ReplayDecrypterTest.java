@@ -7,50 +7,37 @@ import org.junit.Test;
 
 import java.io.*;
 
-public class ReplayDecrypterTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-  private final String fileName =
-          "/replayFile.wotreplay";
+public class ReplayDecrypterTest {
 
-  private File replayFile;
+    private final String FILENAME = "/replayFile.wotreplay";
 
-  private ReplayFileReader reader;
+    private File replayFile;
 
-  @Before
-  public void setUp() throws IOException {
-    final String filePath = ReplayDecrypterTest.class.getResource(fileName).toString();
-    System.out.println("File path " + filePath);
-    replayFile = new File(filePath);
+    private ReplayFileReader reader;
 
-    reader = new ReplayFileReader(replayFile);
-    reader.init();
-  }
-
-  @Test
-  public void testDecrypt() throws Exception {
-
-  }
-
-  @Test
-  public void testDecryptToByteArray() throws Exception {
-
-  }
-
-  @Test
-  public void testDecryptWithArrayAndFileOutputStreamShouldGiveSameThing() throws IOException {
-    File tempsFile = new File("temp");
-    FileOutputStream fos = new FileOutputStream(tempsFile);
-
-    ReplayDecrypter decrypter = new ReplayDecrypter(reader.getCryptedBlock());
-    byte[] withoutFos = decrypter.decryptToByteArray(reader.getCryptedBlock());
-    decrypter.decrypt(fos);
-
-    FileInputStream fis = new FileInputStream(tempsFile);
-
-    for(int i = 0 ;i < 4; i++){
-      System.out.println("From fis : " + fis.read());
-      System.out.println("From other streamless decrypter " + withoutFos[i]);
+    @Before
+    public void setUp() throws Exception {
+        replayFile = new File(ReplayDecrypterTest.class.getResource(FILENAME).getPath());
+        reader = new ReplayFileReader(replayFile);
+        reader.init();
     }
-  }
+
+    @Test
+    public void testDecryptWithArrayAndFileOutputStreamShouldGiveSameThing() throws IOException {
+        File tempsFile = new File("temp");
+        FileOutputStream fos = new FileOutputStream(tempsFile);
+
+        ReplayDecrypter decrypter = new ReplayDecrypter(reader.getCryptedBlock());
+        byte[] withoutFos = decrypter.decryptToByteArray(reader.getCryptedBlock());
+        decrypter.decrypt(fos);
+
+        FileInputStream fis = new FileInputStream(tempsFile);
+
+        for (int i = 0; i < 4; i++) {
+            assertEquals(fis.read(), withoutFos[i]);
+        }
+    }
 
 }
