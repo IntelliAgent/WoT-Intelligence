@@ -26,7 +26,7 @@ public class ReplayFileReader {
         return numberOfBlocks;
     }
 
-    public void init() {
+    public void init() throws IOException {
         int startPointer = 8;
         int blockNumber = 1;
         try {
@@ -64,28 +64,46 @@ public class ReplayFileReader {
         }
     }
 
-    public String getFirstBlock() {
-        byte[] json = ByteBuffer.allocate(getBlockSize(1)).array();
-        try {
-            randomAccessFile.seek(getBlockPosition(1));
-            randomAccessFile.read(json, 0, getBlockSize(1));
-        } catch (IOException e) {
+    public ByteBuffer getFirstBlock() {
+        try{
+            return getBlock(1);
+        }catch(IOException e){
             throw new CannotReadFirstBlockException("Cannot read first block", e);
         }
-        return getReadableJsonData(json);
     }
 
-    public String getSecondBlock() {
-        Integer blockSize = getBlockSize(2);
-        byte[] json = ByteBuffer.allocate(blockSize).array();
-
-        try {
-            randomAccessFile.seek(getBlockPosition(2));
-            randomAccessFile.read(json, 0, blockSize);
-        } catch (IOException e) {
-            throw new CannotReadSecondBlockException("Cannot read second block", e);
+    public ByteBuffer getSecondBlock() {
+        try{
+            return getBlock(2);
+        }catch(IOException e){
+            throw new CannotReadSecondBlockException("Cannot read first block", e);
         }
-        return getReadableJsonData(json);
+    }
+
+    public ByteBuffer getThirdBlock(){
+        try{
+            return getBlock(3);
+        }catch(IOException e){
+            throw new CannotReadThirdBlockException("Cannot read first block", e);
+        }
+    }
+
+    public String getFirstBlockAsReadableJson(){
+        try{
+            final ByteBuffer firstBlock = getBlock(1);
+            return getReadableJsonData(firstBlock.array());
+        }catch(IOException e){
+            throw new CannotReadFirstBlockException("Cannot read first block", e);
+        }
+    }
+
+    public String getSecondBlockAsReadableJson(){
+        try{
+            final ByteBuffer secondBlock = getBlock(2);
+            return getReadableJsonData(secondBlock.array());
+        }catch(IOException e){
+            throw new CannotReadFirstBlockException("Cannot read second block", e);
+        }
     }
 
     public int getCryptedPartSize() {
@@ -129,6 +147,18 @@ public class ReplayFileReader {
         JsonParser jp = new JsonParser();
         JsonElement je = jp.parse(buffer.toString());
         return gson.toJson(je);
+    }
+
+    private ByteBuffer getBlock(int blockPos) throws IOException{
+        final int blockSize = getBlockSize(blockPos);
+        byte[] buf = ByteBuffer.allocate(blockSize).array();
+        try {
+            randomAccessFile.seek(getBlockPosition(blockPos));
+            randomAccessFile.read(buf, 0, blockSize);
+        } catch (IOException e) {
+            throw e;
+        }
+        return ByteBuffer.wrap(buf);
     }
 
     public String getReplayName() {
