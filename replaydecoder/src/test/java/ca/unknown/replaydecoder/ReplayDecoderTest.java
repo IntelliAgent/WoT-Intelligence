@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 public class ReplayDecoderTest {
 
-    private static final String fileName = "20150521131209 - T95E2FreeReroll - province-usa-t1_cunningham - 5231679620627844.wotreplay";
+    private static final String fileName = "replayFile.wotreplay";
 
     @ClassRule
     public static TemporaryFolder testFolder = new TemporaryFolder();
