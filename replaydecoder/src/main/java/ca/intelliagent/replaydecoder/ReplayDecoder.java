@@ -21,15 +21,15 @@ public abstract class ReplayDecoder {
         this.outputDirectory = outputDirectory;
     }
 
-    protected  ReplayDecoder(ReplayFileReader replayFileReader){
+    protected ReplayDecoder(ReplayFileReader replayFileReader) {
         this.replayFileReader = replayFileReader;
     }
 
-    public ByteBuffer decode(){
+    public ByteBuffer decode() {
         final byte[] compressedCrypted = replayFileReader.getCryptedBlock();
         final ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
         byte[] decripted = replayDecrypter.decryptToByteArray(compressedCrypted);
-        try{
+        try {
             return ByteBuffer.wrap(ZlibCompression.decompressData(decripted));
         } catch (DataFormatException e) {
             throw new CannotDecodeReplayException("Cannot decode replay", e);

@@ -1,6 +1,7 @@
 package ca.intelliagent.replaydecoder.decryption;
 
 import ca.intelliagent.replaydecoder.decryption.exception.CannotDecryptReplayException;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.crypto.Cipher;
@@ -56,25 +57,23 @@ public class ReplayDecrypter {
         }
     }
 
-    private static byte[] decryptBlowfish(byte[] to_decrypt){
+    private static byte[] decryptBlowfish(byte[] to_decrypt) {
         try {
             SecretKeySpec key = new SecretKeySpec(KEY, "Blowfish");
             Cipher cipher = Cipher.getInstance("Blowfish/ECB/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, key);
+            ByteOutputStream byteOutputStream = new ByteOutputStream();
 
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
             byte[] paddedToDecrypted = Arrays.copyOfRange(to_decrypt, 0, to_decrypt.length + padding_size);
 
-            byte[] decrypted = cipher.update(to_decrypt, 0, BLOCK_SIZE);
-            byte[] previous = decrypted;
-
-            LinkedList<Byte> replayDecripted = new LinkedList(Arrays.asList(ArrayUtils.toObject(decrypted)));
+            byte[] previous = cipher.update(to_decrypt, 0, BLOCK_SIZE);
 
             for (int i = 8; i < paddedToDecrypted.length - BLOCK_SIZE; i += BLOCK_SIZE) {
                 byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, i, i + BLOCK_SIZE);
                 byte[] decrypt = cipher.update(toDecrypt);
                 previous = xorArrays(previous, decrypt);
-                replayDecripted.addAll(Arrays.asList(ArrayUtils.toObject(previous)));
+                byteOutputStream.write(previous, 0, BLOCK_SIZE);
             }
 
             byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, paddedToDecrypted.length - 8, paddedToDecrypted.length);
@@ -82,14 +81,10 @@ public class ReplayDecrypter {
 
             previous = xorArrays(previous, decrypt);
 
-            replayDecripted.addAll(Arrays.asList(ArrayUtils.toObject(previous)));
+            byteOutputStream.write(previous, 0, BLOCK_SIZE);
+            byteOutputStream.close();
 
-            byte[] decripted = new byte[replayDecripted.size()];
-
-            for(int i = 0 ; i < replayDecripted.size() ; i++)
-                decripted[i] = replayDecripted.get(i);
-
-            return decripted;
+            return byteOutputStream.getBytes();
         } catch (Exception e) {
             throw new CannotDecryptReplayException("Cannot decrypt replay exception", e);
         }

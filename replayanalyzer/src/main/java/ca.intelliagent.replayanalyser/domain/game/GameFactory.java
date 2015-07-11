@@ -14,73 +14,74 @@ import java.nio.file.FileSystemException;
 
 public class GameFactory {
 
-  private ReplayDecoder decoder;
+    private ReplayDecoder decoder;
 
-  private ReplayParser parser;
+    private ReplayParser parser;
 
-  private ReplayFileReader reader;
+    private ReplayFileReader reader;
 
-  public GameFactory() {}
-
-  public GameFactory(File replayFile){
-    setReplay(replayFile);
-  }
-
-  public GameFactory(String replayPath) throws FileNotFoundException, FileSystemException{
-    setReplay(replayPath);
-  }
-
-  public Game getGame() throws IOException, IllegalArgumentException {
-    reader.init();
-
-    decoder = ReplayDecoderFactory.getReplayDecoder(reader);
-
-    parser = new ReplayParser(decoder.decode());
-
-    switch(reader.getNumberOfBlocks()){
-      case 1:
-        return null;
-      case 2:
-        return new Game(parser.getPackets(), new JSONObject(reader.getFirstBlockAsReadableJson()),
-                new JSONArray(reader.getSecondBlockAsReadableJson()));
-      case 3:
-        return null;
-      default:
-        throw new IllegalArgumentException("Replay must have between 1 to 3 blocks. Was " + reader.getNumberOfBlocks());
+    public GameFactory() {
     }
-  }
 
-  public Game getGame(File replayFile) throws IOException, IllegalArgumentException{
-    setReplay(replayFile);
-    return getGame();
-  }
+    public GameFactory(File replayFile) {
+        setReplay(replayFile);
+    }
 
-  public Game getGame(String replayPath) throws IOException, IllegalArgumentException{
-    setReplay(replayPath);
-    return getGame();
-  }
+    public GameFactory(String replayPath) throws FileNotFoundException, FileSystemException {
+        setReplay(replayPath);
+    }
 
-  public void setReplay(File replayFile){
-    init(replayFile);
-  }
+    public Game getGame() throws IOException, IllegalArgumentException {
+        reader.init();
 
-  public void setReplay(String replayPath) throws FileNotFoundException, FileSystemException{
-    File replayFile = new File(replayPath);
+        decoder = ReplayDecoderFactory.getReplayDecoder(reader);
 
-    fileNotFoundOrFileNotReadable(replayPath, replayFile);
+        parser = new ReplayParser(decoder.decode());
 
-    init(replayFile);
-  }
+        switch (reader.getNumberOfBlocks()) {
+            case 1:
+                return null;
+            case 2:
+                return new Game(parser.getPackets(), new JSONObject(reader.getFirstBlockAsReadableJson()),
+                        new JSONArray(reader.getSecondBlockAsReadableJson()));
+            case 3:
+                return null;
+            default:
+                throw new IllegalArgumentException("Replay must have between 1 to 3 blocks. Was " + reader.getNumberOfBlocks());
+        }
+    }
 
-  private void init(File replayFile){
-    reader = new ReplayFileReader(replayFile);
-  }
+    public Game getGame(File replayFile) throws IOException, IllegalArgumentException {
+        setReplay(replayFile);
+        return getGame();
+    }
 
-  private void fileNotFoundOrFileNotReadable(String replayPath, File replayFile) throws FileNotFoundException, FileSystemException {
-    if(!replayFile.exists())
-      throw new FileNotFoundException(replayPath);
-    if(!replayFile.canRead())
-      throw new FileSystemException(replayPath);
-  }
+    public Game getGame(String replayPath) throws IOException, IllegalArgumentException {
+        setReplay(replayPath);
+        return getGame();
+    }
+
+    public void setReplay(File replayFile) {
+        init(replayFile);
+    }
+
+    public void setReplay(String replayPath) throws FileNotFoundException, FileSystemException {
+        File replayFile = new File(replayPath);
+
+        fileNotFoundOrFileNotReadable(replayPath, replayFile);
+
+        init(replayFile);
+    }
+
+    private void init(File replayFile) {
+        reader = new ReplayFileReader(replayFile);
+    }
+
+    private void fileNotFoundOrFileNotReadable(String replayPath, File replayFile) throws FileNotFoundException, FileSystemException {
+        if (!replayFile.exists())
+            throw new FileNotFoundException(replayPath);
+        if (!replayFile.canRead())
+            throw new FileSystemException(replayPath);
+    }
 
 }
