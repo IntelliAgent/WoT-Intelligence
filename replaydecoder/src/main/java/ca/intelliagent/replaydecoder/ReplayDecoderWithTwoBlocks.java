@@ -10,7 +10,11 @@ public class ReplayDecoderWithTwoBlocks extends ReplayDecoder {
         super(fileReader, outputDirectory);
     }
 
-    public ByteBuffer decode() {
+    public ReplayDecoderWithTwoBlocks(ReplayFileReader fileReader){
+        super(fileReader);
+    }
+
+    public ByteBuffer decodeToOutputDirectory() {
         String replayExtracted =
                 replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
 
@@ -18,12 +22,12 @@ public class ReplayDecoderWithTwoBlocks extends ReplayDecoder {
         File file = new File(JSON);
         try {
             FileOutputStream jsonData = new FileOutputStream(file);
-            jsonData.write(replayFileReader.getFirstBlock().getBytes());
-            jsonData.write(replayFileReader.getSecondBlock().getBytes());
+            jsonData.write(replayFileReader.getFirstBlockAsReadableJson().getBytes());
+            jsonData.write(replayFileReader.getSecondBlockAsReadableJson().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return super.decode();
+        return super.decodeToOutputDirectory();
 
     }
 }

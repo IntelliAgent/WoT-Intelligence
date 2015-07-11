@@ -41,7 +41,11 @@ public class Main {
             if (isExtensionReplayValid(replay)) {
 
                 ReplayFileReader replayFileReader = new ReplayFileReader(replay);
-                replayFileReader.init();
+                try {
+                    replayFileReader.init();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 replayFileReader.validateMagicNumber();
 
                 int numberOfJsonBlock = replayFileReader.getNumberOfBlocks();
@@ -49,7 +53,7 @@ public class Main {
                 ReplayDecoder replayDecoder = getReplayDecoder(numberOfJsonBlock, replayFileReader, outputDirectory);
                 ByteBuffer decodedReplay = null;
                 if (replayDecoder != null) {
-                    decodedReplay = replayDecoder.decode();
+                    decodedReplay = replayDecoder.decodeToOutputDirectory();
                     //decodedReplay.order(ByteOrder.LITTLE_ENDIAN);
                 }
 
