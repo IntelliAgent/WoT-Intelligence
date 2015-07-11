@@ -1,7 +1,6 @@
 package ca.intelliagent.replaydecoder.decompression;
 
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
@@ -10,6 +9,9 @@ import java.util.zip.Inflater;
  * Inspired by http://stackoverflow.com/q/6173920/600500.
  */
 public final class ZlibCompression {
+
+    private static Inflater DECOMPRESSOR = new Inflater();
+    private static byte[] dataBytes = new byte[10 * 1024 * 1024];
 
     public static byte[] decompressData(FileInputStream fileInputStream) throws IOException, DataFormatException {
 
@@ -23,27 +25,21 @@ public final class ZlibCompression {
 
         byte[] bytes = bos.toByteArray();
 
-        Inflater decompresser = new Inflater();
-        decompresser.setInput(bytes);
+        DECOMPRESSOR.setInput(bytes);
 
-        byte[] dataBytes = new byte[10 * 1024 * 1024];
-
-        int resultLength = decompresser.inflate(dataBytes);
+        int resultLength = DECOMPRESSOR.inflate(dataBytes);
         dataBytes = Arrays.copyOf(dataBytes, resultLength);
-        decompresser.end();
+        DECOMPRESSOR.end();
 
         return dataBytes;
     }
 
-    public static byte[] decompressData(byte[] data) throws DataFormatException{
-        Inflater decompresser = new Inflater();
-        decompresser.setInput(data);
+    public static byte[] decompressData(byte[] data) throws DataFormatException {
+        DECOMPRESSOR.setInput(data);
 
-        byte[] dataBytes = new byte[10 * 1024 * 1024];
-
-        int resultLength = decompresser.inflate(dataBytes);
+        int resultLength = DECOMPRESSOR.inflate(dataBytes);
         dataBytes = Arrays.copyOf(dataBytes, resultLength);
-        decompresser.end();
+        DECOMPRESSOR.end();
 
         return dataBytes;
     }
