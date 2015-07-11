@@ -5,8 +5,11 @@ import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.FileOutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -25,9 +28,7 @@ public class ReplayDecrypter {
 
     private static void decryptBlowfish(byte[] to_decrypt, FileOutputStream replayDecrypted) {
         try {
-            SecretKeySpec key = new SecretKeySpec(KEY, "Blowfish");
-            Cipher cipher = Cipher.getInstance("Blowfish/ECB/NoPadding");
-            cipher.init(Cipher.DECRYPT_MODE, key);
+            Cipher cipher = getCipher();
 
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
             byte[] paddedToDecrypted = Arrays.copyOfRange(to_decrypt, 0, to_decrypt.length + padding_size);
@@ -59,9 +60,7 @@ public class ReplayDecrypter {
 
     private static byte[] decryptBlowfish(byte[] to_decrypt) {
         try {
-            SecretKeySpec key = new SecretKeySpec(KEY, "Blowfish");
-            Cipher cipher = Cipher.getInstance("Blowfish/ECB/NoPadding");
-            cipher.init(Cipher.DECRYPT_MODE, key);
+            Cipher cipher = getCipher();
             ByteOutputStream byteOutputStream = new ByteOutputStream();
 
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
@@ -88,6 +87,13 @@ public class ReplayDecrypter {
         } catch (Exception e) {
             throw new CannotDecryptReplayException("Cannot decrypt replay exception", e);
         }
+    }
+
+    private static Cipher getCipher() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
+        SecretKeySpec key = new SecretKeySpec(KEY, "Blowfish");
+        Cipher cipher = Cipher.getInstance("Blowfish/ECB/NoPadding");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        return cipher;
     }
 
     private static byte[] xorArrays(byte[] a, byte[] b) {
