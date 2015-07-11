@@ -48,7 +48,7 @@ public class ReplayDecoderTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         reader = new ReplayFileReader(new File(resourceDirectory + fileName));
         reader.init();
         reader.validateMagicNumber();
@@ -61,7 +61,7 @@ public class ReplayDecoderTest {
     @Test
     public void test() {
         if (decoder != null)
-            decoder.decode();
+            decoder.decodeToOutputDirectory();
     }
 
 }
