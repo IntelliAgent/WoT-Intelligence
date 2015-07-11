@@ -1,6 +1,7 @@
 package ca.intelliagent.replaydecoder;
 
 import ca.intelliagent.replaydecoder.decompression.ReplayDecompressor;
+import ca.intelliagent.replaydecoder.decompression.ZlibCompression;
 import ca.intelliagent.replaydecoder.decryption.ReplayDecrypter;
 import ca.intelliagent.replaydecoder.exception.CannotDecodeReplayException;
 
@@ -8,32 +9,50 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.*;
+import java.util.zip.DataFormatException;
 
 public abstract class ReplayDecoder {
 
     protected final ReplayFileReader replayFileReader;
-    protected final Path defaultDirectory;
+    protected Path outputDirectory;
 
     protected ReplayDecoder(ReplayFileReader replayFileReader, Path outputDirectory) {
         this.replayFileReader = replayFileReader;
-        defaultDirectory = outputDirectory;
+        this.outputDirectory = outputDirectory;
     }
 
+    protected  ReplayDecoder(ReplayFileReader replayFileReader){
+        this.replayFileReader = replayFileReader;
+    }
 
-    protected ByteBuffer decode() {
+    public ByteBuffer decode(){
+        final byte[] compressedCrypted = replayFileReader.getCryptedBlock();
+        final ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
+        byte[] decripted = replayDecrypter.decryptToByteArray(compressedCrypted);
+        try{
+            return ByteBuffer.wrap(ZlibCompression.decompressData(decripted));
+        } catch (DataFormatException e) {
+            throw new CannotDecodeReplayException("Cannot decode replay", e);
+        }
+    }
+
+    //TODO The output directory should be given here
+    //TODO Refactor this method so it uses the decode method
+    public ByteBuffer decodeToOutputDirectory() {
         byte[] compressedCrypted = replayFileReader.getCryptedBlock();
+
         String replayExtracted =
                 replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
 
         StringBuilder sb = new StringBuilder();
-        String decompressed = sb.append(defaultDirectory).append(replayExtracted).append(" - Decompressed.dat").toString();
+        String decompressed = sb.append(outputDirectory).append(replayExtracted).append(" - Decompressed.dat").toString();
         ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
 
         sb = new StringBuilder();
-        String decryptedFile = sb.append(defaultDirectory).append(replayExtracted).append(" - Decrypted.dat").toString();
-        FileOutputStream decompressFile = null;
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
+        String decryptedFile = sb.append(outputDirectory).append(replayExtracted).append(" - Decrypted.dat").toString();
+        FileOutputStream decompressFile;
+        FileInputStream fis;
+        FileOutputStream fos;
 
         try {
             fos = new FileOutputStream(decryptedFile);
