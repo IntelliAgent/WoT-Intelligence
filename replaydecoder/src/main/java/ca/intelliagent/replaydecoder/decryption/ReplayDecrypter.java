@@ -1,11 +1,11 @@
 package ca.intelliagent.replaydecoder.decryption;
 
 import ca.intelliagent.replaydecoder.decryption.exception.CannotDecryptReplayException;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +27,7 @@ public class ReplayDecrypter {
     private static ByteBuffer decryptBlowfish(byte[] to_decrypt) {
         try {
             Cipher cipher = getCipher();
-            ByteOutputStream byteOutputStream = new ByteOutputStream();
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
 
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
             byte[] paddedToDecrypted = Arrays.copyOfRange(to_decrypt, 0, to_decrypt.length + padding_size);
@@ -51,7 +51,7 @@ public class ReplayDecrypter {
             byteOutputStream.write(previous, 0, BLOCK_SIZE);
             byteOutputStream.close();
 
-            return ByteBuffer.wrap(byteOutputStream.getBytes());
+            return ByteBuffer.wrap(byteOutputStream.toByteArray());
 
         } catch (Exception e) {
             throw new CannotDecryptReplayException("Cannot decrypt replay exception", e);

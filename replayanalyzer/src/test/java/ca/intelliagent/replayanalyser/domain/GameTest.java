@@ -28,7 +28,5 @@ public class GameTest {
     public void testDummyGameCreation() {
         Game game = new Game(null, new JSONObject(reader.getFirstBlockAsReadableJson()),
                 new JSONArray(reader.getSecondBlockAsReadableJson()));
-
-        System.out.println(game.getGameMode());
     }
 }

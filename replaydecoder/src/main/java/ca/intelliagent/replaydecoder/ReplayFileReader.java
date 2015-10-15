@@ -40,7 +40,6 @@ public class ReplayFileReader {
 
             numberOfBlocks = ByteSwapper.swap(randomAccessFile.readInt());
             int tmpNumberOfBlocks = numberOfBlocks;
-            System.out.println("Number of blocks : " + numberOfBlocks);
             if (numberOfBlocks == 0) {
                 throw new InvalidReplayFormatException("Number of block is 0");
             }

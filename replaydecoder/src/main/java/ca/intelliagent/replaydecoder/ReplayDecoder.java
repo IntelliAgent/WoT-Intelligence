@@ -5,12 +5,9 @@ import ca.intelliagent.replaydecoder.decompression.ZlibCompression;
 import ca.intelliagent.replaydecoder.decryption.ReplayDecrypter;
 import ca.intelliagent.replaydecoder.exception.CannotDecodeReplayException;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.zip.DataFormatException;
 
 public abstract class ReplayDecoder {
@@ -34,12 +31,12 @@ public abstract class ReplayDecoder {
         try {
             return ByteBuffer.wrap(ZlibCompression.decompressData(decrypted.array()));
         } catch (DataFormatException e) {
-            throw new CannotDecodeReplayException("Cannot decode replay", e);
+            throw new CannotDecodeReplayException("Cannot decode replay because of : " + e.getMessage(), e);
         }
     }
 
-    //TODO The output directory should be given here
-    //TODO Refactor this method so it uses the decode method
+    //TODO: The output directory should be given here
+    //TODO: Refactor this method so it uses the decode method
     public ByteBuffer decodeToOutputDirectory() {
         byte[] compressedCrypted = replayFileReader.getCryptedBlock();
 
@@ -50,33 +47,22 @@ public abstract class ReplayDecoder {
         String decompressed = sb.append(outputDirectory).append(replayExtracted).append(" - Decompressed.dat").toString();
         ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
 
-        sb = new StringBuilder();
-        String decryptedFile = sb.append(outputDirectory).append(replayExtracted).append(" - Decrypted.dat").toString();
         FileOutputStream decompressFile;
-        FileInputStream fis;
-        FileOutputStream fos;
 
         try {
-            fos = new FileOutputStream(decryptedFile);
-
-            System.out.println("Decrypting : " + replayExtracted);
             ByteBuffer decrypted = replayDecrypter.decrypt();
 
-
-            fis = new FileInputStream(decryptedFile);
             decompressFile = new FileOutputStream(decompressed);
+
             ReplayDecompressor replayDecompressor = new ReplayDecompressor(decrypted.array());
 
-            System.out.println("Decompressing : " + replayExtracted);
             byte[] decompressedData = replayDecompressor.unzip();
             decompressFile.write(decompressedData);
-            fis.close();
-            Files.delete(Paths.get(decryptedFile));
 
             return ByteBuffer.wrap(decompressedData);
 
         } catch (Exception e) {
-            throw new CannotDecodeReplayException("Cannot decode replay", e);
+            throw new CannotDecodeReplayException("Cannot decode replay because of : " + e.getMessage(), e);
         }
     }
 }
