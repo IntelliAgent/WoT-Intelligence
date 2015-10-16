@@ -56,7 +56,6 @@ public class Main {
                 ByteBuffer decodedReplay = null;
                 if (replayDecoder != null) {
                     decodedReplay = replayDecoder.decodeToOutputDirectory();
-                    //decodedReplay.order(ByteOrder.LITTLE_ENDIAN);
                 }
 
                 PacketReader packetReader = new BasicPacketReader(decodedReplay);

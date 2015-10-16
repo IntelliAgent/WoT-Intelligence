@@ -5,7 +5,6 @@ import ca.intelliagent.replaydecoder.decompression.ZlibCompression;
 import ca.intelliagent.replaydecoder.decryption.ReplayDecrypter;
 import ca.intelliagent.replaydecoder.exception.CannotDecodeReplayException;
 
-import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.zip.DataFormatException;
@@ -40,24 +39,14 @@ public abstract class ReplayDecoder {
     public ByteBuffer decodeToOutputDirectory() {
         byte[] compressedCrypted = replayFileReader.getCryptedBlock();
 
-        String replayExtracted =
-                replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
-
-        StringBuilder sb = new StringBuilder();
-        String decompressed = sb.append(outputDirectory).append(replayExtracted).append(" - Decompressed.dat").toString();
         ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
-
-        FileOutputStream decompressFile;
 
         try {
             ByteBuffer decrypted = replayDecrypter.decrypt();
 
-            decompressFile = new FileOutputStream(decompressed);
-
             ReplayDecompressor replayDecompressor = new ReplayDecompressor(decrypted.array());
 
             byte[] decompressedData = replayDecompressor.unzip();
-            decompressFile.write(decompressedData);
 
             return ByteBuffer.wrap(decompressedData);
 
