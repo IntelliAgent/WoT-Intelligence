@@ -20,8 +20,6 @@ public class ReplayDecoderWithTwoBlocks extends ReplayDecoder {
         String replayExtracted =
                 replayFileReader.getReplayName().substring(0, replayFileReader.getReplayName().indexOf(".wotreplay"));
 
-
-
         String JSON = outputDirectory + replayExtracted + ".json";
         File file = new File(JSON);
         try {

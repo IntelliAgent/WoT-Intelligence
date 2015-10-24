@@ -8,7 +8,6 @@ import java.nio.file.Path;
 
 public class ReplayDecoderWithOneBlock extends ReplayDecoder {
 
-
     public ReplayDecoderWithOneBlock(ReplayFileReader fileReader, Path outputDirectory) {
         super(fileReader, outputDirectory);
     }
