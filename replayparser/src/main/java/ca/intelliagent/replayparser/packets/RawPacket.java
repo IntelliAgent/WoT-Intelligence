@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import static ca.intelliagent.replayparser.packets.subtypes.SubPacketType.fromInt;
 
 public class RawPacket {
+
     private final PacketType type;
     private final int payloadLength;
     private final float clock;

@@ -9,9 +9,7 @@ import java.nio.ByteBuffer;
 
 public class SubPacket0801 extends Packet08 {
 
-    @Expose
     private short health;
-    @Expose
     private int source;
 
     public SubPacket0801(PacketType type, int length, float clock, ByteBuffer payload) {

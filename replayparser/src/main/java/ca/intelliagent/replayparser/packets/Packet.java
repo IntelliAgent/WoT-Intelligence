@@ -2,20 +2,15 @@ package ca.intelliagent.replayparser.packets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
 
 import java.nio.ByteBuffer;
 
 public abstract class Packet {
 
-    @Expose
     protected final int length;
-    @Expose
     protected final PacketType type;
-    @Expose
     protected final float clock;
     protected final ByteBuffer payload;
-    @Expose
     protected final int playerID;
 
 

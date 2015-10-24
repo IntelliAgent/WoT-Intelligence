@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose;
 import java.nio.ByteBuffer;
 
 public class SubPacket0707 extends Packet07 {
-    @Expose
+
     private int destroyedTrackID;
 
     public SubPacket0707(PacketType type, int length, float clock, ByteBuffer payload) {
