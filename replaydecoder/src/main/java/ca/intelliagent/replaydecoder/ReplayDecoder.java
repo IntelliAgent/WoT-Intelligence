@@ -4,7 +4,11 @@ import ca.intelliagent.replaydecoder.decompression.ReplayDecompressor;
 import ca.intelliagent.replaydecoder.decompression.ZlibCompression;
 import ca.intelliagent.replaydecoder.decryption.ReplayDecrypter;
 import ca.intelliagent.replaydecoder.exception.CannotDecodeReplayException;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.zip.DataFormatException;
@@ -24,19 +28,6 @@ public abstract class ReplayDecoder {
     }
 
     public ByteBuffer decode() {
-        final byte[] compressedCrypted = replayFileReader.getCryptedBlock();
-        final ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);
-        ByteBuffer decrypted = replayDecrypter.decrypt();
-        try {
-            return ByteBuffer.wrap(ZlibCompression.decompressData(decrypted.array()));
-        } catch (DataFormatException e) {
-            throw new CannotDecodeReplayException("Cannot decode replay because of : " + e.getMessage(), e);
-        }
-    }
-
-    //TODO: The output directory should be given here
-    //TODO: Refactor this method so it uses the decode method
-    public ByteBuffer decodeToOutputDirectory() {
         byte[] compressedCrypted = replayFileReader.getCryptedBlock();
 
         ReplayDecrypter replayDecrypter = new ReplayDecrypter(compressedCrypted);

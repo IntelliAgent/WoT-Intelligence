@@ -3,10 +3,12 @@ package ca.intelliagent.replayparser.packets.subtypes.packet07;
 import ca.intelliagent.replayparser.packets.Packet07;
 import ca.intelliagent.replayparser.packets.PacketType;
 import ca.intelliagent.replayparser.packets.RawPacket;
-import com.google.gson.annotations.Expose;
 
 import java.nio.ByteBuffer;
 
+/**
+ * @see <a href="http://wiki.vbaddict.net/pages/Packet_0x00">Packet 00</a>
+ */
 public class SubPacket0707 extends Packet07 {
 
     private int destroyedTrackID;
@@ -17,6 +19,10 @@ public class SubPacket0707 extends Packet07 {
 
     public SubPacket0707(RawPacket rawPacket) {
         super(rawPacket);
+    }
+
+    public int getDestroyedTrackID() {
+        return destroyedTrackID;
     }
 
     @Override

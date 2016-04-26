@@ -1,7 +1,14 @@
 package ca.intelliagent.replaydecoder;
 
 import ca.intelliagent.common.swapper.ByteSwapper;
-import ca.intelliagent.replaydecoder.exception.*;
+import ca.intelliagent.replaydecoder.exception.CannotGetCryptedBlockException;
+import ca.intelliagent.replaydecoder.exception.CannotGetCryptedPartSizeException;
+import ca.intelliagent.replaydecoder.exception.CannotInitializeReplayDecoderException;
+import ca.intelliagent.replaydecoder.exception.CannotReadFirstBlockException;
+import ca.intelliagent.replaydecoder.exception.CannotReadSecondBlockException;
+import ca.intelliagent.replaydecoder.exception.CannotReadThirdBlockException;
+import ca.intelliagent.replaydecoder.exception.CannotValidateMagicNumberException;
+import ca.intelliagent.replaydecoder.exception.InvalidReplayFormatException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -17,13 +24,21 @@ import java.util.Map;
 public class ReplayFileReader {
 
     private static final String MAGIC_NUMBER = "12323411";
-    private final File file;
     private final Map<Integer, Integer> dataBlockSize = new HashMap<>();
     private final Map<Integer, Integer> dataBlockPosition = new HashMap<>();
+    private File file;
     private int numberOfBlocks;
     private RandomAccessFile randomAccessFile;
 
+    public ReplayFileReader() {
+
+    }
+
     public ReplayFileReader(File file) {
+        this.file = file;
+    }
+
+    public void setFile(File file) {
         this.file = file;
     }
 

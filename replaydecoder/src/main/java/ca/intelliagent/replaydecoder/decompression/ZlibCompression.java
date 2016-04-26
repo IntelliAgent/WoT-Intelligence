@@ -1,23 +1,24 @@
 package ca.intelliagent.replaydecoder.decompression;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
-/**
- * Inspired by http://stackoverflow.com/q/6173920/600500.
- */
 public final class ZlibCompression {
 
-    private static Inflater DECOMPRESSOR = new Inflater();
-    private static byte[] dataBytes = new byte[10 * 1024 * 1024];
+    private static final Logger LOG = Logger.getLogger(String.valueOf(ZlibCompression.class));
 
-    public static byte[] decompressData(byte[] data) throws DataFormatException {
-        DECOMPRESSOR.setInput(data);
+    public static synchronized byte[] decompressData(byte[] data) throws DataFormatException, IOException {
+        Inflater decompresser = new Inflater();
+        decompresser.setInput(data);
 
-        int resultLength = DECOMPRESSOR.inflate(dataBytes);
+        byte[] dataBytes = new byte[10 * 1024 * 1024];
+
+        int resultLength = decompresser.inflate(dataBytes);
         dataBytes = Arrays.copyOf(dataBytes, resultLength);
-        DECOMPRESSOR.end();
+        decompresser.end();
 
         return dataBytes;
     }

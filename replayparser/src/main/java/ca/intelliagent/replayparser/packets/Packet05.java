@@ -2,6 +2,9 @@ package ca.intelliagent.replayparser.packets;
 
 import java.nio.ByteBuffer;
 
+/**
+ *  @see <a href="http://wiki.vbaddict.net/pages/Packet_0x05">Packet 05</a>
+ */
 public class Packet05 extends Packet {
 
     public Packet05(PacketType type, int length, float clock, ByteBuffer payload) {

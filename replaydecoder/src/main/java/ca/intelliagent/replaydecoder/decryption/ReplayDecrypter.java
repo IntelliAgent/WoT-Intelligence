@@ -4,12 +4,16 @@ import ca.intelliagent.replaydecoder.decryption.exception.CannotDecryptReplayExc
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class ReplayDecrypter {
 
@@ -27,29 +31,23 @@ public class ReplayDecrypter {
     private static ByteBuffer decryptBlowfish(byte[] to_decrypt) {
         try {
             Cipher cipher = getCipher();
-            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
 
             int padding_size = BLOCK_SIZE - (to_decrypt.length % BLOCK_SIZE);
             byte[] paddedToDecrypted = Arrays.copyOfRange(to_decrypt, 0, to_decrypt.length + padding_size);
 
-            byte[] previous = cipher.update(to_decrypt, 0, BLOCK_SIZE);
+            byte[] previous = cipher.update(paddedToDecrypted, 0, BLOCK_SIZE);
 
+            int paddedLength = paddedToDecrypted.length;
+
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream(paddedLength);
             byteOutputStream.write(previous);
 
-            for (int i = 8; i < paddedToDecrypted.length - BLOCK_SIZE; i += BLOCK_SIZE) {
-                byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, i, i + BLOCK_SIZE);
-                byte[] decrypt = cipher.update(toDecrypt);
-                previous = xorArrays(previous, decrypt);
+            for (int i = 8; i < paddedLength; i += BLOCK_SIZE) {
+                byte[] decrypt = cipher.update(paddedToDecrypted, i, BLOCK_SIZE);
+                xorArrays(previous, decrypt);
                 byteOutputStream.write(previous, 0, BLOCK_SIZE);
             }
-
-            byte[] toDecrypt = Arrays.copyOfRange(to_decrypt, paddedToDecrypted.length - 8, paddedToDecrypted.length);
-            byte[] decrypt = cipher.doFinal(toDecrypt);
-
-            previous = xorArrays(previous, decrypt);
-
-            byteOutputStream.write(previous, 0, BLOCK_SIZE);
-            byteOutputStream.close();
+            cipher.doFinal();
 
             return ByteBuffer.wrap(byteOutputStream.toByteArray());
 
@@ -65,14 +63,10 @@ public class ReplayDecrypter {
         return cipher;
     }
 
-    private static byte[] xorArrays(byte[] a, byte[] b) {
-        byte[] xor = new byte[a.length];
-
+    private static void xorArrays(byte[] a, byte[] b) {
         for (int i = 0; i < a.length; i++) {
-            xor[i] = (byte) (a[i] ^ b[i]);
+            a[i] = (byte) (a[i] ^ b[i]);
         }
-
-        return xor;
     }
 
     public ByteBuffer decrypt() {

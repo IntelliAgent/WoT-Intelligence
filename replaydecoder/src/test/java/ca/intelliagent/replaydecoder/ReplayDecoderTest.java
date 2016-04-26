@@ -64,7 +64,7 @@ public class ReplayDecoderTest {
     @Test
     public void test() {
         if (decoder != null)
-            decoder.decodeToOutputDirectory();
+            decoder.decode();
     }
 
 }

@@ -37,15 +37,43 @@ public abstract class Packet {
     public abstract void toReadableFormat();
 
     public float getPosX() {
-        return 0.0F;
+        return -1.0F;
     }
 
     public float getPosY() {
-        return 0.0F;
+        return -1.0F;
     }
 
     public float getPosZ() {
-        return 0.0F;
+        return -1.0F;
+    }
+
+    public float getHullYaw() {
+        return -1.0F;
+    }
+
+    public float getHullY() {
+        return -1.0F;
+    }
+
+    public float getHullZ() {
+        return -1.0F;
+    }
+
+    public int getSource() {
+        return -1;
+    }
+
+    public int getTarget() {
+        return -1;
+    }
+
+    public short getHealth() {
+        return -1;
+    }
+
+    public int getDestroyedTrackID() {
+        return -1;
     }
 
     public int getPlayerID() {
@@ -62,7 +90,7 @@ public abstract class Packet {
 
     @Override
     public String toString() {
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
 }

@@ -68,9 +68,8 @@ public class RawPacket {
 
     @Override
     public String toString() {
-        String s = "Type : " + type
+        return "Type : " + type
                 + " Length : " + payloadLength
                 + " Clock : " + clock;
-        return s;
     }
 }
